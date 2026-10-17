@@ -1,0 +1,559 @@
+{
+  "users": [
+    {
+      "id": "usr-1792121207414-bns0",
+      "firstName": "Theresa",
+      "lastName": "Lawrence",
+      "email": "theresalawrence504@gmail.com",
+      "phone": "09013465607",
+      "role": "trainee",
+      "isEmailVerified": true,
+      "createdAt": "2026-10-16T03:26:47.414Z",
+      "salt": "b7da8fbee3f2ad8a34b7429ca653679a",
+      "passwordHash": "68ade316c95c2c1bb7bb109c33e4f9ca742da2e09d34cab68b1d3b0c076c2d7945d07a7aa7e4217551e6db480d10b97c9fa8daf0adb04acdb8024900a0dc3c68",
+      "assignedProgramIds": []
+    },
+    {
+      "id": "usr-1792195089112-covr",
+      "firstName": "Aidy",
+      "lastName": "sax",
+      "email": "aidysax@gmail.com",
+      "phone": "09040290704",
+      "role": "trainee",
+      "isEmailVerified": true,
+      "createdAt": "2026-10-16T23:58:09.113Z",
+      "salt": "f929e9526a7dc2fe4d1c13dbdb075a04",
+      "passwordHash": "df774dfa8b22033aa28888e0019bd96ac2f987e032f6afadd90b541c8f6565edc2bfc1305ba2a35253224c43089318c4933d7ecc59f49e7a320eb47a729c4144",
+      "assignedProgramIds": []
+    },
+    {
+      "id": "usr-admin-bootstrap",
+      "firstName": "System",
+      "lastName": "Administrator",
+      "email": "admin@omedantech.com",
+      "phone": "",
+      "role": "admin",
+      "assignedProgramIds": [],
+      "isEmailVerified": true,
+      "createdAt": "2026-10-17T00:33:04.093Z",
+      "salt": "18f7d070fa78a320300a91a342e93d25",
+      "passwordHash": "ec8fb99c6cc6dd7a5c12a4f412e2845723dca0ad872470b2e8ca3e2c81ad88c9d8a1f7d0d62e33dc932b5de7b8acd04294ace049e8c1389e8ae92ed72ef71e39"
+    }
+  ],
+  "services": [
+    {
+      "id": "srv-1",
+      "slug": "product-discovery-strategy",
+      "order": 1,
+      "title": "Product Discovery & Strategy",
+      "shortDescription": "We help transform early ideas into validated product opportunities through market research, customer insights, and strategic planning.",
+      "fullDescription": "Our discovery process bridges the gap between vision and market realities. We validate core assumptions, prioritize features, and define a clear roadmap to ensure your software development investment delivers high-impact results.",
+      "keyOfferings": [
+        "Market-fit analysis",
+        "Customer experience (CX) research",
+        "User research and discovery",
+        "Product roadmaps & MVP planning"
+      ],
+      "icon": "Compass"
+    },
+    {
+      "id": "srv-2",
+      "slug": "software-app-development",
+      "order": 2,
+      "title": "Software & App Development",
+      "shortDescription": "We design, develop, and maintain custom digital products that solve real-world problems and support business growth.",
+      "fullDescription": "From high-performance web platforms to native-quality mobile solutions and scalable microservices, our engineering team constructs maintainable, performant, and resilient applications.",
+      "keyOfferings": [
+        "Custom software & MVP creation",
+        "Web & mobile application engineering",
+        "API integration & database design",
+        "Software testing and long-term maintenance"
+      ],
+      "icon": "Code2"
+    },
+    {
+      "id": "srv-3",
+      "slug": "ai-prompting",
+      "order": 3,
+      "title": "AI Prompting",
+      "shortDescription": "Learn how to guide powerful AI assistants with clear instructions, relevant context, structured prompts, and effective evaluation.",
+      "fullDescription": "Prompt engineering is the systematic discipline of instructing existing artificial intelligence models to produce more relevant, accurate, and high-value outputs across commercial workflows.",
+      "keyOfferings": [
+        "Prompt engineering fundamentals",
+        "LLM interaction & context design",
+        "Structured output generation",
+        "AI workflow optimization & prompt testing"
+      ],
+      "icon": "Sparkles"
+    },
+    {
+      "id": "srv-4",
+      "slug": "ai-development",
+      "order": 4,
+      "title": "AI Development",
+      "shortDescription": "We engineer intelligent software systems using machine learning, AI models, data processing, and modern software development practices.",
+      "fullDescription": "We build proprietary AI-driven features, retrieval-augmented generation (RAG) pipelines, intelligent recommendation engines, and automated data processing tools that give modern enterprises a strategic advantage.",
+      "keyOfferings": [
+        "AI-powered business applications",
+        "Machine learning & predictive modeling",
+        "Retrieval-Augmented Generation (RAG)",
+        "Model evaluation, automation & deployment"
+      ],
+      "icon": "BrainCircuit"
+    },
+    {
+      "id": "srv-5",
+      "slug": "cloud-infrastructure",
+      "order": 5,
+      "title": "Cloud & Infrastructure",
+      "shortDescription": "We design and manage scalable infrastructure that supports reliable applications, efficient deployment, and business continuity.",
+      "fullDescription": "Modern applications require bulletproof uptime and rapid deployment pipelines. We implement containerization, automated CI/CD, cloud architecture, and proactive telemetry.",
+      "keyOfferings": [
+        "Cloud architecture & server configuration",
+        "Automated CI/CD pipelines",
+        "Infrastructure monitoring & scalability planning",
+        "Disaster recovery & technical debt management"
+      ],
+      "icon": "Cloud"
+    },
+    {
+      "id": "srv-6",
+      "slug": "cybersecurity-compliance",
+      "order": 6,
+      "title": "Cybersecurity & Compliance",
+      "shortDescription": "We help organizations identify security risks, strengthen digital systems, protect data, and improve compliance readiness.",
+      "fullDescription": "Security is integral to engineering. We conduct authorized vulnerability assessments, establish robust data protection architectures, configure secure access controls, and train teams on security best practices.",
+      "keyOfferings": [
+        "Authorized vulnerability assessments",
+        "Secure software development lifecycles",
+        "Data protection & access control reviews",
+        "Security awareness & incident response planning"
+      ],
+      "icon": "ShieldCheck"
+    },
+    {
+      "id": "srv-7",
+      "slug": "it-staff-augmentation",
+      "order": 7,
+      "title": "IT Staff Augmentation",
+      "shortDescription": "We help organizations scale their technical capabilities by providing dedicated professionals who support software delivery, design, and product management.",
+      "fullDescription": "Augment your development velocity with vetted engineers, designers, and product leaders trained to integrate seamlessly into your existing sprints, repositories, and culture.",
+      "keyOfferings": [
+        "Dedicated software developers & full-stack engineers",
+        "UI/UX designers & product managers",
+        "Quality assurance & testing specialists",
+        "AI, data, and technical project support"
+      ],
+      "icon": "Users"
+    }
+  ],
+  "teamMembers": [
+    {
+      "id": "tm-1",
+      "name": "Comrade Idara Udofia",
+      "position": "Managing Director",
+      "professionalTitle": "Software Engineer",
+      "description": "Leads the company's strategic direction, innovation initiatives, and overall technology operations.",
+      "photoUrl": "/src/assets/images/team_director_idara_1792132762948.jpg",
+      "order": 1,
+      "socialLinks": {
+        "linkedin": "https://linkedin.com"
+      }
+    },
+    {
+      "id": "tm-2",
+      "name": "Comrade Imoh Ben",
+      "position": "Full-Stack Developer",
+      "professionalTitle": "Senior Engineer",
+      "description": "Supports the design and development of end-to-end software applications, backend services, and modern web solutions.",
+      "photoUrl": "/src/assets/images/team_senior_dev_imoh_1792132763338.jpg",
+      "order": 2,
+      "socialLinks": {
+        "github": "https://github.com"
+      }
+    },
+    {
+      "id": "tm-3",
+      "name": "Miss Comfort Iwah",
+      "position": "Front Desk Officer",
+      "professionalTitle": "Customer Care",
+      "description": "Supports inquiries, communicates with visitors, and helps applicants navigate the firm's services and training opportunities.",
+      "photoUrl": "/src/assets/images/team_frontdesk_comfort_1792132765176.jpg",
+      "order": 3
+    },
+    {
+      "id": "tm-4",
+      "name": "Miss Theresa",
+      "position": "UI/UX Designer",
+      "professionalTitle": "Designer",
+      "description": "Creates intuitive user experiences, attractive interfaces, and consistent visual designs for digital products.",
+      "photoUrl": "/src/assets/images/team_designer_theresa_1792132779604.jpg",
+      "order": 4
+    },
+    {
+      "id": "tm-5",
+      "name": "Temple Matthew",
+      "position": "Junior Developer",
+      "professionalTitle": "Junior Developer",
+      "description": "Contributes to software development, feature implementation, testing, and ongoing product improvement.",
+      "photoUrl": "/src/assets/images/team_junior_temple_1792132780658.jpg",
+      "order": 5
+    }
+  ],
+  "trainees": [
+    {
+      "id": "tr-1",
+      "name": "Sarah Akpan",
+      "programInterest": "AI Prompting & LLM Interaction",
+      "learningGoal": "Mastering prompt architecture and structured agent prompting to automate research and enterprise documentation.",
+      "photoUrl": "/src/assets/images/trainee_showcase_sarah_1792132779792.jpg",
+      "cohort": "Cohort 2026-A (Applicant Spotlight)",
+      "isApproved": true
+    },
+    {
+      "id": "tr-2",
+      "name": "Emmanuel Bassey",
+      "programInterest": "Full-Stack Web Development",
+      "learningGoal": "Building scalable cloud-native web applications with React, TypeScript, and Node.js for emerging African startups.",
+      "photoUrl": "",
+      "cohort": "Cohort 2026-A",
+      "isApproved": true
+    },
+    {
+      "id": "tr-3",
+      "name": "Blessing Ekong",
+      "programInterest": "UI/UX Design",
+      "learningGoal": "Developing design systems and accessible user experiences for mobile banking and fintech applications.",
+      "photoUrl": "",
+      "cohort": "Cohort 2026-A",
+      "isApproved": true
+    },
+    {
+      "id": "tr-4",
+      "name": "David Okon",
+      "programInterest": "AI Development & Machine Learning",
+      "learningGoal": "Training predictive machine learning models and engineering RAG architectures for local language accessibility.",
+      "photoUrl": "",
+      "cohort": "Cohort 2026-B (Prospective)",
+      "isApproved": true
+    },
+    {
+      "id": "tr-5",
+      "name": "Grace Udoh",
+      "programInterest": "Cybersecurity & Compliance",
+      "learningGoal": "Deepening knowledge in vulnerability management, network security audits, and data protection regulations.",
+      "photoUrl": "",
+      "cohort": "Cohort 2026-B (Prospective)",
+      "isApproved": true
+    },
+    {
+      "id": "tr-6",
+      "name": "Victor Nsikak",
+      "programInterest": "Cloud Computing & DevOps",
+      "learningGoal": "Designing high-availability Kubernetes clusters, automated CI/CD pipelines, and cloud migration strategies.",
+      "photoUrl": "",
+      "cohort": "Cohort 2026-A",
+      "isApproved": true
+    }
+  ],
+  "programs": [
+    {
+      "id": "prog-1",
+      "title": "AI Prompting & LLM Interaction",
+      "slug": "ai-prompting",
+      "category": "AI & Prompt Engineering",
+      "format": "Hybrid",
+      "duration": "6 Weeks",
+      "startDate": "November 10, 2026",
+      "applicationDeadline": "November 3, 2026",
+      "prerequisites": "Basic computer literacy and curiosity about modern artificial intelligence tools.",
+      "description": "Master the art and science of prompt engineering. Learn how to guide leading AI models with structured instructions, contextual anchors, system framing, and output schema evaluation.",
+      "curriculum": [
+        "Module 1: Principles of Generative AI and Token Economics",
+        "Module 2: Zero-Shot, Few-Shot, and Chain-of-Thought Prompting",
+        "Module 3: Structured Data Extraction & Schema Enforcement",
+        "Module 4: Enterprise Workflow Automation & Prompt Testing",
+        "Module 5: Responsible AI, Bias Mitigation & Capstone Project"
+      ],
+      "status": "Open",
+      "featured": true
+    },
+    {
+      "id": "prog-2",
+      "title": "AI Development & Machine Learning",
+      "slug": "ai-development",
+      "category": "Artificial Intelligence",
+      "format": "In-Person",
+      "duration": "12 Weeks",
+      "startDate": "November 17, 2026",
+      "applicationDeadline": "November 8, 2026",
+      "prerequisites": "Foundational programming knowledge in Python or JavaScript.",
+      "description": "A comprehensive immersion into training, fine-tuning, and integrating modern AI architectures. Build retrieval-augmented generation (RAG) engines, embedding search pipelines, and predictive algorithms.",
+      "curriculum": [
+        "Module 1: Python for Data Science and Machine Learning",
+        "Module 2: Neural Networks & Deep Learning Foundations",
+        "Module 3: Embeddings, Vector Stores, and RAG Architecture",
+        "Module 4: API Integration with Gemini and Open-Source Models",
+        "Module 5: Production Deployment and Scalable Model Serving"
+      ],
+      "status": "Open",
+      "featured": true
+    },
+    {
+      "id": "prog-3",
+      "title": "Full-Stack Web Development",
+      "slug": "full-stack-web-development",
+      "category": "Software Engineering",
+      "format": "Hybrid",
+      "duration": "16 Weeks",
+      "startDate": "November 10, 2026",
+      "applicationDeadline": "November 3, 2026",
+      "prerequisites": "Commitment to 12+ hours weekly. Prior coding interest encouraged but not required.",
+      "description": "Learn modern software engineering from first principles to full deployment. Build production-grade web applications using React, TypeScript, Node.js, REST APIs, and relational databases.",
+      "curriculum": [
+        "Module 1: Modern JavaScript & TypeScript Engineering",
+        "Module 2: Component Architecture with React & Tailwind CSS",
+        "Module 3: Server Architecture, REST APIs & Express.js",
+        "Module 4: Relational Databases, SQL & Authentication Systems",
+        "Module 5: Git Workflows, Testing, CI/CD & Cloud Deployment"
+      ],
+      "status": "Open",
+      "featured": true
+    },
+    {
+      "id": "prog-4",
+      "title": "Mobile App Development",
+      "slug": "mobile-app-development",
+      "category": "Mobile Engineering",
+      "format": "Hybrid",
+      "duration": "12 Weeks",
+      "startDate": "November 24, 2026",
+      "applicationDeadline": "November 15, 2026",
+      "prerequisites": "Basic JavaScript/TypeScript or programming fundamentals.",
+      "description": "Craft beautiful, high-performance cross-platform mobile apps for iOS and Android. Cover state management, camera/sensor hardware integration, offline caching, and app store deployment.",
+      "curriculum": [
+        "Module 1: React Native & Expo Fundamentals",
+        "Module 2: Mobile UI/UX Patterns & Touch Navigation",
+        "Module 3: Local Storage, SQLite & Offline First Architecture",
+        "Module 4: Push Notifications & Backend Integration",
+        "Module 5: Performance Optimization & App Store Packaging"
+      ],
+      "status": "Open"
+    },
+    {
+      "id": "prog-5",
+      "title": "UI/UX Design & Product Interface",
+      "slug": "ui-ux-design",
+      "category": "Design & Experience",
+      "format": "In-Person",
+      "duration": "8 Weeks",
+      "startDate": "November 10, 2026",
+      "applicationDeadline": "November 3, 2026",
+      "prerequisites": "Interest in visual aesthetics, empathy, and product usability.",
+      "description": "Develop the skills needed to design intuitive, accessible digital products. Master Figma, wireframing, high-fidelity prototypes, user research interviews, and responsive design systems.",
+      "curriculum": [
+        "Module 1: Design Thinking & User Research Methods",
+        "Module 2: Information Architecture & Wireframing",
+        "Module 3: Visual Hierarchy, Typography & Color Systems in Figma",
+        "Module 4: Interactive Prototyping & Usability Testing",
+        "Module 5: Developer Handoff & Design System Maintenance"
+      ],
+      "status": "Open"
+    },
+    {
+      "id": "prog-6",
+      "title": "Cloud Computing & DevOps Architecture",
+      "slug": "cloud-computing-devops",
+      "category": "Cloud & Infrastructure",
+      "format": "Hybrid",
+      "duration": "10 Weeks",
+      "startDate": "December 1, 2026",
+      "applicationDeadline": "November 20, 2026",
+      "prerequisites": "Familiarity with terminal/command line and basic networking concepts.",
+      "description": "Master modern infrastructure operations, containerization with Docker, Kubernetes orchestration, Infrastructure as Code, and automated deployment pipelines on major cloud providers.",
+      "curriculum": [
+        "Module 1: Linux Administration & Cloud Networking Fundamentals",
+        "Module 2: Containerization with Docker & Multi-stage Builds",
+        "Module 3: CI/CD Automation with GitHub Actions",
+        "Module 4: Kubernetes Cluster Architecture & Monitoring",
+        "Module 5: Security Hardening & Zero-Downtime Deployment"
+      ],
+      "status": "Open"
+    },
+    {
+      "id": "prog-7",
+      "title": "Cybersecurity & Compliance Fundamentals",
+      "slug": "cybersecurity-compliance",
+      "category": "Cybersecurity",
+      "format": "In-Person",
+      "duration": "10 Weeks",
+      "startDate": "November 24, 2026",
+      "applicationDeadline": "November 15, 2026",
+      "prerequisites": "Basic understanding of computer networks and operating systems.",
+      "description": "Learn foundational defensive security, vulnerability analysis within authorized scope, identity and access management, encryption protocols, and compliance framework readiness.",
+      "curriculum": [
+        "Module 1: Security Principles, Threat Modeling & Ethics",
+        "Module 2: Network Defense, Firewalls & Traffic Inspection",
+        "Module 3: Authorized Web Application Vulnerability Assessment",
+        "Module 4: Cryptography & Identity Access Management (IAM)",
+        "Module 5: Incident Triage & Data Privacy Compliance"
+      ],
+      "status": "Open"
+    },
+    {
+      "id": "prog-8",
+      "title": "Product Discovery & Tech Strategy",
+      "slug": "product-discovery-strategy",
+      "category": "Product Strategy",
+      "format": "Weekend Intensive",
+      "duration": "6 Weeks",
+      "startDate": "November 14, 2026",
+      "applicationDeadline": "November 7, 2026",
+      "prerequisites": "Aspiring product managers, startup founders, or business analysts.",
+      "description": "Learn how to de-risk technology investments before writing code. Formulate customer hypotheses, validate market demand, prioritize features, and draft crisp technical roadmaps.",
+      "curriculum": [
+        "Module 1: Problem Space Definition & Customer Discovery",
+        "Module 2: Competitor Landscape & Market Opportunity Sizing",
+        "Module 3: MVP Scoping & Feature Prioritization Matrices",
+        "Module 4: Metrics That Matter: Product Analytics & KPIs",
+        "Module 5: Pitching to Engineering Teams & Stakeholder Alignment"
+      ],
+      "status": "Open"
+    }
+  ],
+  "applications": [
+    {
+      "id": "app-1792195267187",
+      "referenceNo": "OMD-TRN-2026-60260",
+      "userId": "usr-1792195089112-covr",
+      "userEmail": "aidysax@gmail.com",
+      "applicantName": "Aidy sax",
+      "applicantPhone": "09040290704",
+      "programId": "prog-2",
+      "programTitle": "AI Development & Machine Learning",
+      "programSlug": "ai-development",
+      "educationLevel": "Undergraduate Student",
+      "experienceLevel": "Intermediate",
+      "reasonForApplying": "I have interest in Tech",
+      "learningGoals": "To be focus and commit",
+      "availability": "Full-Time Weekday Intensive",
+      "screeningAnswers": {
+        "priorCodingExperience": "Basic familiarity",
+        "weeklyHoursCommitment": "10-15 hours",
+        "hasPersonalLaptop": "Yes, modern laptop available"
+      },
+      "declarationAccepted": true,
+      "status": "Submitted",
+      "submissionDate": "2026-10-17T00:01:07.187Z",
+      "updatedAt": "2026-10-17T00:01:07.187Z"
+    }
+  ],
+  "statusHistory": [
+    {
+      "id": "hist-1792195267187",
+      "applicationId": "app-1792195267187",
+      "oldStatus": "Draft",
+      "newStatus": "Submitted",
+      "changedBy": "aidysax@gmail.com",
+      "notes": "Application submitted successfully.",
+      "timestamp": "2026-10-17T00:01:07.187Z"
+    }
+  ],
+  "contactMessages": [
+    {
+      "id": "msg-1",
+      "name": "Aniebiet James",
+      "email": "aniebiet@gmail.com",
+      "phone": "+234 803 111 2233",
+      "category": "Training Inquiries",
+      "message": "Hello OmedanTech team, I would like to inquire if there is any financial aid or flexible installment option for the Full-Stack Web Development cohort?",
+      "status": "new",
+      "createdAt": "2026-10-12T09:15:00.000Z"
+    }
+  ],
+  "siteSettings": {
+    "brandName": "OmedanTech",
+    "slogan": "Innovate. Build. Scale.",
+    "marqueeText": "Innovation and Creativity in Tech",
+    "developerCredit": "Developed by OmedanTech Team 2026.",
+    "supportEmail": "info@omedantech.com",
+    "phone": "+234 802 000 0626",
+    "address": "OmedanTech Starthub, Innovation Way, Tech Hub District",
+    "mission": "To empower individuals and businesses through technology innovation, practical training, and reliable digital solutions.",
+    "vision": "To become a trusted technology solution center for software engineering, AI innovation, and digital skills development.",
+    "coreValues": [
+      "Innovation",
+      "Creativity",
+      "Excellence",
+      "Integrity",
+      "Collaboration",
+      "Continuous Learning"
+    ]
+  },
+  "auditLogs": [
+    {
+      "id": "log-1",
+      "action": "SYSTEM_BOOT",
+      "details": "OmedanTech Starthub core database initialized.",
+      "timestamp": "2026-10-16T02:40:58.802Z"
+    },
+    {
+      "id": "log-1792121207417",
+      "action": "USER_REGISTERED",
+      "details": "New trainee registered: theresalawrence504@gmail.com",
+      "userId": "usr-1792121207414-bns0",
+      "timestamp": "2026-10-16T03:26:47.417Z"
+    },
+    {
+      "id": "log-1792183394650",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-1",
+      "timestamp": "2026-10-16T20:43:14.650Z"
+    },
+    {
+      "id": "log-1792191561069",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-1",
+      "timestamp": "2026-10-16T22:59:21.069Z"
+    },
+    {
+      "id": "log-1792195089114",
+      "action": "USER_REGISTERED",
+      "details": "New trainee registered: aidysax@gmail.com",
+      "userId": "usr-1792195089112-covr",
+      "timestamp": "2026-10-16T23:58:09.114Z"
+    },
+    {
+      "id": "log-1792195267189",
+      "action": "APPLICATION_SUBMITTED",
+      "details": "Application OMD-TRN-2026-60260 submitted by aidysax@gmail.com for AI Development & Machine Learning",
+      "userId": "usr-1792195089112-covr",
+      "timestamp": "2026-10-17T00:01:07.189Z"
+    },
+    {
+      "id": "log-1792195408322",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-1",
+      "timestamp": "2026-10-17T00:03:28.322Z"
+    },
+    {
+      "id": "log-1792197358105",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-17T00:35:58.105Z"
+    },
+    {
+      "id": "log-1792197392106",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-17T00:36:32.106Z"
+    }
+  ],
+  "attendanceRecords": [],
+  "performanceRecords": []
+}

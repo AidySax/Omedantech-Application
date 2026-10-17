@@ -1,0 +1,6 @@
+{
+  "name": "OmedanTech Starthub & Training Management System",
+  "description": "Professional Web-Based Landing Page, User Registration, and Training Application Management System for OmedanTech Tech Starthub.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
