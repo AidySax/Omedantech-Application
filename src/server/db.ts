@@ -13,6 +13,8 @@ import {
   SiteSettings,
   AttendanceRecord,
   PerformanceRecord,
+  TrainingAssignment,
+  TrainingSubmission,
   StaffPosition,
 } from '../types';
 
@@ -29,6 +31,9 @@ interface DatabaseSchema {
   auditLogs: { id: string; action: string; userId?: string; details: string; timestamp: string }[];
   attendanceRecords: AttendanceRecord[];
   performanceRecords: PerformanceRecord[];
+  trainingAssignments: TrainingAssignment[];
+  trainingSubmissions: TrainingSubmission[];
+  traineePassports: { traineeId: string; fileName: string; mimeType: string }[];
 }
 
 const DB_FILE = path.resolve(process.cwd(), 'data', 'database.json');
@@ -192,7 +197,7 @@ const initialTeam: TeamMember[] = [
     position: 'Managing Director',
     professionalTitle: 'Software Engineer',
     description: "Leads the company's strategic direction, innovation initiatives, and overall technology operations.",
-    photoUrl: '/src/assets/images/team_director_idara_1792132762948.jpg',
+    photoUrl: '/src/assets/images/team_director_idara_1792132762948.jfif',
     order: 1,
     socialLinks: {
       linkedin: 'https://linkedin.com',
@@ -204,7 +209,7 @@ const initialTeam: TeamMember[] = [
     position: 'Full-Stack Developer',
     professionalTitle: 'Senior Engineer',
     description: 'Supports the design and development of end-to-end software applications, backend services, and modern web solutions.',
-    photoUrl: '/src/assets/images/team_senior_dev_imoh_1792132763338.jpg',
+    photoUrl: '/src/assets/images/team_senior_dev_imoh_1792132763338.jfif',
     order: 2,
     socialLinks: {
       github: 'https://github.com',
@@ -216,7 +221,7 @@ const initialTeam: TeamMember[] = [
     position: 'Front Desk Officer',
     professionalTitle: 'Customer Care',
     description: "Supports inquiries, communicates with visitors, and helps applicants navigate the firm's services and training opportunities.",
-    photoUrl: '/src/assets/images/team_frontdesk_comfort_1792132765176.jpg',
+    photoUrl: '/src/assets/images/team_frontdesk_comfort_1792132765176.jfif',
     order: 3,
   },
   {
@@ -225,7 +230,7 @@ const initialTeam: TeamMember[] = [
     position: 'UI/UX Designer',
     professionalTitle: 'Designer',
     description: 'Creates intuitive user experiences, attractive interfaces, and consistent visual designs for digital products.',
-    photoUrl: '/src/assets/images/team_designer_theresa_1792132779604.jpg',
+    photoUrl: '/src/assets/images/team_designer_theresa_1792132779604.jfif',
     order: 4,
   },
   {
@@ -527,6 +532,9 @@ class Database {
             statusHistory,
             attendanceRecords: parsed.attendanceRecords || [],
             performanceRecords: parsed.performanceRecords || [],
+            trainingAssignments: parsed.trainingAssignments || [],
+            trainingSubmissions: parsed.trainingSubmissions || [],
+            traineePassports: parsed.traineePassports || [],
             auditLogs: parsed.auditLogs || [],
           } as DatabaseSchema;
           if (filteredUsers.some((user) => user.role === 'admin')) {
@@ -573,6 +581,9 @@ class Database {
       ],
       attendanceRecords: [],
       performanceRecords: [],
+      trainingAssignments: [],
+      trainingSubmissions: [],
+      traineePassports: [],
     };
 
     if (!schema.users.some((user) => user.role === 'admin')) {
@@ -604,7 +615,87 @@ class Database {
   }
 
   getUserByEmail(email: string) {
-    return this.data.users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+    const normalized = email.trim().toLowerCase();
+    return this.data.users.find((u) => u.email.trim().toLowerCase() === normalized);
+  }
+
+  getTraineeAccounts() {
+    return this.data.users
+      .filter((user) => user.role === 'trainee')
+      .map(({ id, firstName, lastName, email, phone, createdAt }) => ({
+        id,
+        firstName,
+        lastName,
+        email,
+        phone,
+        createdAt,
+        hasPassportPhoto: this.data.traineePassports.some((passport) => passport.traineeId === id),
+        applicationCount: this.data.applications.filter((application) => application.userId === id).length,
+      }))
+      .sort((a, b) => a.lastName.localeCompare(b.lastName) || a.firstName.localeCompare(b.firstName));
+  }
+
+  getTraineePassport(traineeId: string) {
+    return this.data.traineePassports.find((passport) => passport.traineeId === traineeId) || null;
+  }
+
+  addTraineePassport(traineeId: string, fileName: string, mimeType: string) {
+    this.data.traineePassports = this.data.traineePassports.filter((passport) => passport.traineeId !== traineeId);
+    this.data.traineePassports.push({ traineeId, fileName, mimeType });
+    this.saveDatabase();
+  }
+
+  updateTraineeAccount(id: string, profile: Pick<User, 'firstName' | 'lastName' | 'email' | 'phone'>) {
+    const user = this.data.users.find((item) => item.id === id && item.role === 'trainee');
+    if (!user) return null;
+    const oldPrivateData = [user.email, `${user.firstName} ${user.lastName}`.trim(), user.phone].filter(Boolean);
+    this.data.auditLogs = this.data.auditLogs.map((log) => {
+      let details = log.details;
+      for (const value of oldPrivateData) details = details.split(value).join('[updated trainee]');
+      return { ...log, details };
+    });
+    Object.assign(user, profile);
+    this.data.applications = this.data.applications.map((application) =>
+      application.userId === id
+        ? {
+            ...application,
+            applicantName: `${profile.firstName} ${profile.lastName}`.trim(),
+            userEmail: profile.email,
+            applicantPhone: profile.phone,
+          }
+        : application
+    );
+    this.saveDatabase();
+    return user;
+  }
+
+  deleteTraineeAccount(id: string) {
+    const user = this.data.users.find((item) => item.id === id && item.role === 'trainee');
+    if (!user) return null;
+    const passport = this.getTraineePassport(id);
+    const applications = this.data.applications.filter((application) => application.userId === id);
+    const applicationIds = new Set(applications.map((application) => application.id));
+    const applicationReferences = applications.flatMap((application) => [application.id, application.referenceNo]);
+    const privateData = [id, user.email, `${user.firstName} ${user.lastName}`.trim(), user.phone, ...applicationReferences]
+      .filter(Boolean);
+    this.data.users = this.data.users.filter((item) => item.id !== id);
+    this.data.traineePassports = this.data.traineePassports.filter((passport) => passport.traineeId !== id);
+    this.data.applications = this.data.applications.filter((application) => application.userId !== id);
+    this.data.statusHistory = this.data.statusHistory.filter((history) => !applicationIds.has(history.applicationId));
+    this.data.attendanceRecords = this.data.attendanceRecords.filter((record) => record.traineeId !== id);
+    this.data.performanceRecords = this.data.performanceRecords.filter((record) => record.traineeId !== id);
+    this.data.trainingSubmissions = this.data.trainingSubmissions.filter((submission) => submission.traineeId !== id);
+    this.data.auditLogs = this.data.auditLogs.map((log) => {
+      let details = log.details;
+      for (const value of privateData) details = details.split(value).join('[deleted trainee]');
+      return {
+        ...log,
+        details,
+        ...(log.userId === id ? { userId: undefined } : {}),
+      };
+    });
+    this.saveDatabase();
+    return { user, passport };
   }
 
   addUser(user: User & { passwordHash: string; salt: string }) {
@@ -650,6 +741,66 @@ class Database {
     this.data.performanceRecords.push(record);
     this.saveDatabase();
     return record;
+  }
+
+  getTrainingAssignments(programId?: string) {
+    return this.data.trainingAssignments
+      .filter((assignment) => !programId || assignment.programId === programId)
+      .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  }
+
+  getTrainingAssignmentById(id: string) {
+    return this.data.trainingAssignments.find((assignment) => assignment.id === id);
+  }
+
+  addTrainingAssignment(assignment: TrainingAssignment) {
+    this.data.trainingAssignments.push(assignment);
+    this.saveDatabase();
+    return assignment;
+  }
+
+  getTrainingSubmissions(assignmentId?: string) {
+    return this.data.trainingSubmissions
+      .filter((submission) => !assignmentId || submission.assignmentId === assignmentId)
+      .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt));
+  }
+
+  getTrainingSubmissionById(id: string) {
+    return this.data.trainingSubmissions.find((submission) => submission.id === id);
+  }
+
+  getTrainingSubmissionForTrainee(assignmentId: string, traineeId: string) {
+    return this.data.trainingSubmissions.find(
+      (submission) => submission.assignmentId === assignmentId && submission.traineeId === traineeId
+    );
+  }
+
+  saveTrainingSubmission(submission: TrainingSubmission) {
+    const index = this.data.trainingSubmissions.findIndex(
+      (existing) => existing.assignmentId === submission.assignmentId && existing.traineeId === submission.traineeId
+    );
+    if (index === -1) {
+      this.data.trainingSubmissions.push(submission);
+    } else {
+      this.data.trainingSubmissions[index] = { ...this.data.trainingSubmissions[index], ...submission };
+    }
+    this.saveDatabase();
+    return index === -1 ? submission : this.data.trainingSubmissions[index];
+  }
+
+  gradeTrainingSubmission(id: string, score: number, feedback: string, gradedBy: string) {
+    const submission = this.getTrainingSubmissionById(id);
+    if (!submission) return null;
+    const updated = {
+      ...submission,
+      score,
+      feedback,
+      gradedAt: new Date().toISOString(),
+      gradedBy,
+    };
+    this.data.trainingSubmissions = this.data.trainingSubmissions.map((item) => item.id === id ? updated : item);
+    this.saveDatabase();
+    return updated;
   }
 
   updateUser(id: string, partial: Partial<User>) {
@@ -720,6 +871,18 @@ class Database {
       return this.data.trainees.filter((t) => t.isApproved);
     }
     return this.data.trainees;
+  }
+
+  addOrUpdateApplicantShowcase(trainee: TraineeShowcase) {
+    const existing = this.data.trainees.find((item) => item.applicantUserId === trainee.applicantUserId);
+    if (existing) {
+      Object.assign(existing, trainee, { id: existing.id, isApproved: false });
+      this.saveDatabase();
+      return existing;
+    }
+    this.data.trainees.push(trainee);
+    this.saveDatabase();
+    return trainee;
   }
 
   addTrainee(trainee: TraineeShowcase) {

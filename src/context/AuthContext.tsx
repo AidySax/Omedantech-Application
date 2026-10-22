@@ -12,6 +12,8 @@ interface AuthContextType {
     email: string;
     phone?: string;
     password: string;
+    passportPhoto: string;
+    passportConsent: boolean;
     termsAccepted: boolean;
   }) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
@@ -91,6 +93,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     email: string;
     phone?: string;
     password: string;
+    passportPhoto: string;
+    passportConsent: boolean;
     termsAccepted: boolean;
   }) => {
     try {

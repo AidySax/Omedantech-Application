@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CalendarCheck, ClipboardList, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { AttendanceRecord, AttendanceStatus, PerformanceCategory, PerformanceRecord, TrainingProgram, User } from '../types';
+import { TrainingAssignmentManager } from '../components/training/TrainingAssignmentManager';
 
 type EnrolledTrainee = Pick<User, 'id' | 'firstName' | 'lastName' | 'email' | 'phone'>;
 type StaffRecords = { attendance: AttendanceRecord[]; performance: PerformanceRecord[] };
@@ -251,6 +252,7 @@ export const StaffDashboardPage: React.FC = () => {
                 ) : <p className="text-sm text-gray-500">No task, assignment, or contribution feedback recorded yet.</p>}
               </section>
             </div>
+            <TrainingAssignmentManager token={token} role="staff" fixedProgramId={programId} />
           </>
         )}
       </div>

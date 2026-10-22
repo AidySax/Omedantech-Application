@@ -23,26 +23,33 @@ export const PrivacyPage: React.FC = () => {
           <section>
             <h2 className="text-base font-bold text-[#101828] mb-2">1. Data Minimization & Collection</h2>
             <p>
-              OmedanTech collects only information necessary to process user registration, training program applications, and inquiry communications. This includes your name, email, phone number, educational status, and learning objectives.
+              OmedanTech collects information needed to create trainee accounts, process training applications, administer training, and respond to inquiries. This includes your name, email, phone number, passport photograph, educational status, and learning objectives.
             </p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold text-[#101828] mb-2">2. Trainee Showcase Authorization</h2>
+            <h2 className="text-base font-bold text-[#101828] mb-2">2. Passport Photograph</h2>
             <p>
-              In accordance with strict privacy principles, trainee photographs, display names, and program goals are only published in our public showcase with explicit written or electronic consent. Trainees may request removal of their spotlight at any time.
+              Trainee registration requires a passport photograph in JPEG, PNG, or WebP format. It is stored separately from public website images and is available only to authorized administrators for account and training administration. Do not upload an image unless you are authorized to provide it. You may contact us to request correction or deletion of your account and associated personal records.
             </p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold text-[#101828] mb-2">3. Storage & Confidentiality</h2>
+            <h2 className="text-base font-bold text-[#101828] mb-2">3. Trainee Showcase Authorization</h2>
             <p>
-              Application materials and personal credentials are stored in encrypted environments. We do not sell, rent, or share personal applicant data with third parties for commercial advertising.
+              During an application, you may separately consent to submit your display name, program interest, learning goal, and an optional showcase photo for consideration. The optional showcase photo is separate from your private registration passport photograph. A submitted profile remains hidden until an administrator approves it. You may contact us to request removal of your published spotlight.
             </p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold text-[#101828] mb-2">4. Contact Data Protection Officer</h2>
+            <h2 className="text-base font-bold text-[#101828] mb-2">4. Storage & Confidentiality</h2>
+            <p>
+              Passport photographs are served only through an authenticated administrator endpoint and are not placed in public static assets. Passwords are stored as one-way hashes and cannot be viewed by administrators. We do not sell, rent, or share personal applicant data with third parties for commercial advertising.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-base font-bold text-[#101828] mb-2">5. Contact Data Protection Officer</h2>
             <p>
               For privacy inquiries or data update requests, reach out to <a href="mailto:privacy@omedantech.com" className="text-[#155EEF] underline font-semibold">privacy@omedantech.com</a>.
             </p>

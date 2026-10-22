@@ -1,10 +1,45 @@
 import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
 import { Router, Response } from 'express';
 import { db, createPasswordRecord, verifyPassword } from './db';
 import { authenticate, requireAdmin, generateToken, AuthenticatedRequest } from './auth';
-import { ApplicationStatus, AttendanceStatus, PerformanceCategory, StaffPosition } from '../types';
+import {
+  ApplicationStatus,
+  AttendanceStatus,
+  PerformanceCategory,
+  StaffPosition,
+  TrainingAssignment,
+  TrainingSession,
+  TrainingSubmission,
+} from '../types';
 
 export const apiRouter = Router();
+const PASSPORT_DIRECTORY = path.resolve(process.cwd(), 'data', 'private', 'passports');
+const MAX_PASSPORT_SIZE = 5 * 1024 * 1024;
+
+function parsePassportPhoto(dataUrl: unknown) {
+  if (typeof dataUrl !== 'string') return null;
+  const match = /^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/]+={0,2})$/.exec(dataUrl);
+  if (!match || match[2].length % 4 !== 0) return null;
+  const buffer = Buffer.from(match[2], 'base64');
+  if (buffer.length === 0 || buffer.length > MAX_PASSPORT_SIZE || buffer.toString('base64') !== match[2]) return null;
+  const isJpeg = buffer.length >= 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff;
+  const isPng = buffer.length >= 8 && buffer.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]));
+  const isWebp = buffer.length >= 12 && buffer.toString('ascii', 0, 4) === 'RIFF' && buffer.toString('ascii', 8, 12) === 'WEBP';
+  if (
+    (match[1] === 'image/jpeg' && isJpeg) ||
+    (match[1] === 'image/png' && isPng) ||
+    (match[1] === 'image/webp' && isWebp)
+  ) {
+    return {
+      buffer,
+      mimeType: match[1],
+      extension: match[1] === 'image/jpeg' ? 'jpg' : match[1] === 'image/png' ? 'png' : 'webp',
+    };
+  }
+  return null;
+}
 
 const staffPositions: StaffPosition[] = [
   'Managing Director',
@@ -21,13 +56,24 @@ function staffCanManageProgram(user: NonNullable<AuthenticatedRequest['user']>, 
   );
 }
 
+function requireAdminForAllTrainees(req: AuthenticatedRequest, res: Response, next: import('express').NextFunction) {
+  if (req.query.all !== 'true') return next();
+  return authenticate(req, res, () => requireAdmin(req, res, next));
+}
+
 // ================= AUTHENTICATION =================
 
-apiRouter.post('/auth/register', (req, res) => {
+apiRouter.post('/auth/register', async (req, res) => {
+  let passportFilePath = '';
   try {
-    const { firstName, lastName, email, phone, password, termsAccepted } = req.body;
+    const { firstName, lastName, email, phone, password, termsAccepted, passportPhoto, passportConsent } = req.body;
 
-    if (!firstName || !lastName || !email || !password) {
+    if (
+      typeof firstName !== 'string' || !firstName.trim() ||
+      typeof lastName !== 'string' || !lastName.trim() ||
+      typeof email !== 'string' || !email.trim() ||
+      typeof password !== 'string'
+    ) {
       return res.status(400).json({ error: 'Please provide all required fields.' });
     }
 
@@ -35,28 +81,42 @@ apiRouter.post('/auth/register', (req, res) => {
       return res.status(400).json({ error: 'You must accept the Terms and Conditions to proceed.' });
     }
 
+    if (passportConsent !== true) {
+      return res.status(400).json({ error: 'You must authorize secure passport photograph storage to register.' });
+    }
+
+    const parsedPassport = parsePassportPhoto(passportPhoto);
+    if (!parsedPassport) {
+      return res.status(400).json({ error: 'Upload a valid JPEG, PNG, or WebP passport photograph no larger than 5 MB.' });
+    }
+
     if (password.length < 6) {
       return res.status(400).json({ error: 'Password must be at least 6 characters in length.' });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!emailRegex.test(normalizedEmail)) {
       return res.status(400).json({ error: 'Please provide a valid email address.' });
     }
 
-    const existing = db.getUserByEmail(email);
+    const existing = db.getUserByEmail(normalizedEmail);
     if (existing) {
       return res.status(409).json({ error: 'An account with this email address already exists. Please log in.' });
     }
 
     const { salt, passwordHash } = createPasswordRecord(password);
     const userId = 'usr-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4);
+    const fileName = `${crypto.randomBytes(24).toString('hex')}.${parsedPassport.extension}`;
+    await fs.promises.mkdir(PASSPORT_DIRECTORY, { recursive: true, mode: 0o700 });
+    passportFilePath = path.join(PASSPORT_DIRECTORY, fileName);
+    await fs.promises.writeFile(passportFilePath, parsedPassport.buffer, { flag: 'wx', mode: 0o600 });
 
     const newUser = {
       id: userId,
       firstName: firstName.trim(),
       lastName: lastName.trim(),
-      email: email.trim().toLowerCase(),
+      email: normalizedEmail,
       phone: (phone || '').trim(),
       role: 'trainee' as const,
       isEmailVerified: true, // Auto-verified for seamless demonstration or can be toggled
@@ -66,6 +126,8 @@ apiRouter.post('/auth/register', (req, res) => {
     };
 
     db.addUser(newUser);
+    db.addTraineePassport(userId, fileName, parsedPassport.mimeType);
+    passportFilePath = '';
     db.logAction('USER_REGISTERED', `New trainee registered: ${newUser.email}`, newUser.id);
 
     const token = generateToken(newUser);
@@ -77,6 +139,13 @@ apiRouter.post('/auth/register', (req, res) => {
       user: safeUser,
     });
   } catch (err) {
+    if (passportFilePath) {
+      try {
+        await fs.promises.unlink(passportFilePath);
+      } catch (cleanupError) {
+        console.error('Failed to clean up an incomplete passport upload:', cleanupError);
+      }
+    }
     console.error('Registration error:', err);
     res.status(500).json({ error: 'Internal server error during registration.' });
   }
@@ -85,12 +154,13 @@ apiRouter.post('/auth/register', (req, res) => {
 apiRouter.post('/auth/login', (req, res) => {
   try {
     const { email, password } = req.body;
+    const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
 
-    if (!email || !password) {
+    if (!normalizedEmail || typeof password !== 'string' || !password) {
       return res.status(400).json({ error: 'Email and password are required.' });
     }
 
-    const user = db.getUserByEmail(email);
+    const user = db.getUserByEmail(normalizedEmail);
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password credentials.' });
     }
@@ -138,11 +208,12 @@ apiRouter.post('/auth/change-password', authenticate, (req: AuthenticatedRequest
 
 apiRouter.post('/auth/forgot-password', (req, res) => {
   const { email } = req.body;
-  if (!email) return res.status(400).json({ error: 'Email is required.' });
+  const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
+  if (!normalizedEmail) return res.status(400).json({ error: 'Email is required.' });
 
-  const user = db.getUserByEmail(email);
+  const user = db.getUserByEmail(normalizedEmail);
   if (user) {
-    db.logAction('PASSWORD_RESET_REQUEST', `Reset requested for ${email}`);
+    db.logAction('PASSWORD_RESET_REQUEST', `Reset requested for ${normalizedEmail}`);
   }
   // Return consistent message for security
   res.json({ message: 'If an account exists with this email, a password reset link has been dispatched.' });
@@ -152,6 +223,114 @@ apiRouter.post('/auth/forgot-password', (req, res) => {
 
 apiRouter.get('/admin/staff', authenticate, requireAdmin, (_req, res) => {
   res.json(db.getStaffUsers().map(({ passwordHash: _hash, salt: _salt, ...user }) => user));
+});
+
+apiRouter.get('/admin/trainees', authenticate, requireAdmin, (_req, res) => {
+  res.json(db.getTraineeAccounts());
+});
+
+apiRouter.get('/admin/trainees/:id/passport', authenticate, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
+  const user = db.getUserById(req.params.id);
+  const passport = db.getTraineePassport(req.params.id);
+  if (!user || user.role !== 'trainee' || !passport) {
+    return res.status(404).json({ error: 'Trainee passport photograph not found.' });
+  }
+  const imagePath = path.resolve(PASSPORT_DIRECTORY, passport.fileName);
+  if (path.dirname(imagePath) !== PASSPORT_DIRECTORY) {
+    return res.status(404).json({ error: 'Trainee passport photograph not found.' });
+  }
+  try {
+    await fs.promises.access(imagePath, fs.constants.R_OK);
+    res.setHeader('Cache-Control', 'private, no-store');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.type(passport.mimeType).sendFile(imagePath, (error) => {
+      if (error && !res.headersSent) {
+        console.error('Failed to send trainee passport photograph:', error);
+        res.status(500).json({ error: 'Unable to load the passport photograph.' });
+      }
+    });
+  } catch (error) {
+    console.error('Failed to read trainee passport photograph:', error);
+    res.status(500).json({ error: 'Unable to load the passport photograph.' });
+  }
+});
+
+apiRouter.put('/admin/trainees/:id', authenticate, requireAdmin, (req: AuthenticatedRequest, res: Response) => {
+  const { firstName, lastName, email, phone } = req.body;
+  if (
+    typeof firstName !== 'string' || !firstName.trim() || firstName.trim().length > 80 ||
+    typeof lastName !== 'string' || !lastName.trim() || lastName.trim().length > 80 ||
+    typeof email !== 'string' || !email.trim() ||
+    (phone !== undefined && typeof phone !== 'string')
+  ) {
+    return res.status(400).json({ error: 'Enter a valid first name, last name, email address, and phone number.' });
+  }
+  const normalizedEmail = email.trim().toLowerCase();
+  if (normalizedEmail.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+    return res.status(400).json({ error: 'Enter a valid email address.' });
+  }
+  const user = db.getUserById(req.params.id);
+  if (!user || user.role !== 'trainee') return res.status(404).json({ error: 'Trainee account not found.' });
+  const emailOwner = db.getUserByEmail(normalizedEmail);
+  if (emailOwner && emailOwner.id !== user.id) {
+    return res.status(409).json({ error: 'Another account already uses this email address.' });
+  }
+  const updated = db.updateTraineeAccount(user.id, {
+    firstName: firstName.trim(),
+    lastName: lastName.trim(),
+    email: normalizedEmail,
+    phone: (phone || '').trim(),
+  });
+  if (!updated) return res.status(404).json({ error: 'Trainee account not found.' });
+  db.logAction('TRAINEE_ACCOUNT_UPDATED', `Trainee account updated: ${user.id}`, req.user!.id);
+  res.json({
+    id: updated.id,
+    firstName: updated.firstName,
+    lastName: updated.lastName,
+    email: updated.email,
+    phone: updated.phone,
+    createdAt: updated.createdAt,
+    hasPassportPhoto: Boolean(db.getTraineePassport(updated.id)),
+    applicationCount: db.getApplications(updated.id).length,
+  });
+});
+
+apiRouter.post('/admin/trainees/:id/reset-password', authenticate, requireAdmin, (req: AuthenticatedRequest, res: Response) => {
+  const user = db.getUserById(req.params.id);
+  if (!user || user.role !== 'trainee') return res.status(404).json({ error: 'Trainee account not found.' });
+  const temporaryPassword = crypto.randomBytes(24).toString('base64url');
+  if (!db.updatePassword(user.id, temporaryPassword)) {
+    return res.status(500).json({ error: 'Unable to reset the trainee password.' });
+  }
+  db.logAction('TRAINEE_PASSWORD_RESET', `Trainee password reset: ${user.id}`, req.user!.id);
+  res.json({
+    message: 'Password reset. Copy this temporary password now; it will not be shown again.',
+    temporaryPassword,
+  });
+});
+
+apiRouter.delete('/admin/trainees/:id', authenticate, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
+  const user = db.getUserById(req.params.id);
+  if (!user || user.role !== 'trainee') return res.status(404).json({ error: 'Trainee account not found.' });
+  const passport = db.getTraineePassport(user.id);
+  if (passport) {
+    const imagePath = path.resolve(PASSPORT_DIRECTORY, passport.fileName);
+    if (path.dirname(imagePath) !== PASSPORT_DIRECTORY) {
+      return res.status(500).json({ error: 'Unable to safely remove the passport photograph.' });
+    }
+    try {
+      await fs.promises.unlink(imagePath);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+        console.error('Failed to remove trainee passport photograph:', error);
+        return res.status(500).json({ error: 'Unable to remove the trainee passport photograph.' });
+      }
+    }
+  }
+  const deleted = db.deleteTraineeAccount(user.id);
+  if (!deleted) return res.status(404).json({ error: 'Trainee account not found.' });
+  db.logAction('TRAINEE_ACCOUNT_DELETED', 'A trainee account and its linked personal training records were permanently deleted.', req.user!.id);
+  res.json({ message: 'Trainee account and its linked personal data were permanently deleted.' });
 });
 
 apiRouter.post('/admin/staff', authenticate, requireAdmin, (req: AuthenticatedRequest, res: Response) => {
@@ -327,6 +506,161 @@ apiRouter.post('/staff/performance', authenticate, (req: AuthenticatedRequest, r
   res.status(201).json(record);
 });
 
+// ================= TRAINING ASSIGNMENTS & PROGRESS =================
+
+apiRouter.get('/training/my', authenticate, (req: AuthenticatedRequest, res: Response) => {
+  if (req.user!.role !== 'trainee') {
+    return res.status(403).json({ error: 'Trainee access is required.' });
+  }
+
+  const acceptedApplications = db.getApplications(req.user!.id)
+    .filter((application) => application.status === 'Accepted');
+  const enrolledPrograms = new Map(
+    acceptedApplications.map((application) => [application.programId, application.programTitle])
+  );
+  const sessions: TrainingSession[] = Array.from(enrolledPrograms, ([programId, programTitle]) => {
+    const assignments = db.getTrainingAssignments(programId);
+    let earnedPoints = 0;
+    const possiblePoints = assignments.reduce((total, assignment) => total + assignment.maxPoints, 0);
+    const sessionAssignments = assignments.map((assignment) => {
+      const submission = db.getTrainingSubmissionForTrainee(assignment.id, req.user!.id);
+      if (submission?.score !== undefined) earnedPoints += submission.score;
+      return { ...assignment, ...(submission ? { submission } : {}) };
+    });
+    return {
+      programId,
+      programTitle,
+      earnedPoints,
+      possiblePoints,
+      progressPercent: possiblePoints ? Math.round((earnedPoints / possiblePoints) * 100) : 0,
+      assignments: sessionAssignments,
+    };
+  });
+  res.json(sessions);
+});
+
+apiRouter.get('/training/program/:programId', authenticate, (req: AuthenticatedRequest, res: Response) => {
+  const { programId } = req.params;
+  if (!staffCanManageProgram(req.user!, programId)) {
+    return res.status(403).json({ error: 'You are not assigned to this program.' });
+  }
+
+  const assignments = db.getTrainingAssignments(programId);
+  const trainees = db.getEnrolledTrainees(programId).map((trainee) => {
+    let earnedPoints = 0;
+    const possiblePoints = assignments.reduce((total, assignment) => total + assignment.maxPoints, 0);
+    for (const assignment of assignments) {
+      const submission = db.getTrainingSubmissionForTrainee(assignment.id, trainee.id);
+      if (submission?.score !== undefined) earnedPoints += submission.score;
+    }
+    return {
+      ...trainee,
+      earnedPoints,
+      possiblePoints,
+      progressPercent: possiblePoints ? Math.round((earnedPoints / possiblePoints) * 100) : 0,
+    };
+  });
+  const traineeNames = new Map(trainees.map((trainee) => [trainee.id, `${trainee.firstName} ${trainee.lastName}`]));
+  res.json({
+    programId,
+    trainees,
+    assignments: assignments.map((assignment) => ({
+      ...assignment,
+      submissions: db.getTrainingSubmissions(assignment.id).map((submission) => ({
+        ...submission,
+        traineeName: traineeNames.get(submission.traineeId) || 'Unknown trainee',
+      })),
+    })),
+  });
+});
+
+apiRouter.post('/training/assignments', authenticate, (req: AuthenticatedRequest, res: Response) => {
+  const { programId, title, instructions, dueDate, maxPoints } = req.body;
+  if (!programId || typeof programId !== 'string' || !staffCanManageProgram(req.user!, programId)) {
+    return res.status(403).json({ error: 'You are not assigned to this program.' });
+  }
+  if (typeof title !== 'string' || !title.trim() || title.trim().length > 160) {
+    return res.status(400).json({ error: 'Enter an assignment title (up to 160 characters).' });
+  }
+  if (typeof instructions !== 'string' || !instructions.trim() || instructions.trim().length > 10000) {
+    return res.status(400).json({ error: 'Enter assignment instructions (up to 10,000 characters).' });
+  }
+  if (typeof maxPoints !== 'number' || !Number.isInteger(maxPoints) || maxPoints < 1 || maxPoints > 1000) {
+    return res.status(400).json({ error: 'Maximum points must be a whole number from 1 to 1,000.' });
+  }
+  if (
+    typeof dueDate !== 'string' ||
+    (dueDate !== '' && (!/^\d{4}-\d{2}-\d{2}$/.test(dueDate) ||
+      Number.isNaN(Date.parse(`${dueDate}T00:00:00.000Z`)) ||
+      new Date(`${dueDate}T00:00:00.000Z`).toISOString().slice(0, 10) !== dueDate))
+  ) {
+    return res.status(400).json({ error: 'Enter a valid assignment due date.' });
+  }
+  const assignment: TrainingAssignment = {
+    id: `asg-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
+    programId,
+    title: title.trim(),
+    instructions: instructions.trim(),
+    dueDate,
+    maxPoints,
+    createdBy: req.user!.id,
+    createdAt: new Date().toISOString(),
+  };
+  db.addTrainingAssignment(assignment);
+  db.logAction('TRAINING_ASSIGNMENT_CREATED', `Assignment created for program ${programId}: ${assignment.title}`, req.user!.id);
+  res.status(201).json(assignment);
+});
+
+apiRouter.post('/training/assignments/:assignmentId/submission', authenticate, (req: AuthenticatedRequest, res: Response) => {
+  if (req.user!.role !== 'trainee') {
+    return res.status(403).json({ error: 'Trainee access is required.' });
+  }
+  const assignment = db.getTrainingAssignmentById(req.params.assignmentId);
+  if (!assignment) return res.status(404).json({ error: 'Assignment not found.' });
+  if (!db.getEnrolledTrainees(assignment.programId).some((trainee) => trainee.id === req.user!.id)) {
+    return res.status(403).json({ error: 'You are not enrolled in this training program.' });
+  }
+  const { response } = req.body;
+  if (typeof response !== 'string' || !response.trim() || response.trim().length > 20000) {
+    return res.status(400).json({ error: 'Enter your assignment response (up to 20,000 characters).' });
+  }
+  const existing = db.getTrainingSubmissionForTrainee(assignment.id, req.user!.id);
+  if (existing?.score !== undefined) {
+    return res.status(409).json({ error: 'This assignment has already been graded and can no longer be changed.' });
+  }
+  const submission: TrainingSubmission = {
+    id: existing?.id || `sub-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
+    assignmentId: assignment.id,
+    traineeId: req.user!.id,
+    response: response.trim(),
+    submittedAt: new Date().toISOString(),
+  };
+  const saved = db.saveTrainingSubmission(submission);
+  db.logAction('TRAINING_ASSIGNMENT_SUBMITTED', `Trainee submitted assignment ${assignment.id}`, req.user!.id);
+  res.status(200).json(saved);
+});
+
+apiRouter.put('/training/submissions/:submissionId/grade', authenticate, (req: AuthenticatedRequest, res: Response) => {
+  const submission = db.getTrainingSubmissionById(req.params.submissionId);
+  if (!submission) return res.status(404).json({ error: 'Submission not found.' });
+  const assignment = db.getTrainingAssignmentById(submission.assignmentId);
+  if (!assignment) return res.status(404).json({ error: 'Assignment not found.' });
+  if (!staffCanManageProgram(req.user!, assignment.programId)) {
+    return res.status(403).json({ error: 'You are not assigned to this program.' });
+  }
+  const { score, feedback = '' } = req.body;
+  if (typeof score !== 'number' || !Number.isFinite(score) || score < 0 || score > assignment.maxPoints) {
+    return res.status(400).json({ error: `Score must be between 0 and ${assignment.maxPoints}.` });
+  }
+  if (typeof feedback !== 'string' || feedback.length > 5000) {
+    return res.status(400).json({ error: 'Feedback must be text up to 5,000 characters.' });
+  }
+  const updated = db.gradeTrainingSubmission(submission.id, score, feedback.trim(), req.user!.id);
+  if (!updated) return res.status(404).json({ error: 'Submission not found.' });
+  db.logAction('TRAINING_ASSIGNMENT_GRADED', `Assignment ${assignment.id} graded for trainee ${submission.traineeId}`, req.user!.id);
+  res.json(updated);
+});
+
 // ================= SITE SETTINGS =================
 
 apiRouter.get('/settings', (_req, res) => {
@@ -395,7 +729,10 @@ apiRouter.post('/team', authenticate, requireAdmin, (req: AuthenticatedRequest, 
 });
 
 apiRouter.put('/team/:id', authenticate, requireAdmin, (req: AuthenticatedRequest, res: Response) => {
-  const updated = db.updateTeamMember(req.params.id, req.body);
+  if (typeof req.body.name !== 'string' || !req.body.name.trim() || req.body.name.trim().length > 120) {
+    return res.status(400).json({ error: 'Enter a team member name (up to 120 characters).' });
+  }
+  const updated = db.updateTeamMember(req.params.id, { ...req.body, name: req.body.name.trim() });
   if (!updated) return res.status(404).json({ error: 'Team member not found.' });
   db.logAction('TEAM_UPDATED', `Team member updated: ${updated.name}`, req.user!.id);
   res.json(updated);
@@ -403,9 +740,10 @@ apiRouter.put('/team/:id', authenticate, requireAdmin, (req: AuthenticatedReques
 
 // ================= TRAINEE SHOWCASE =================
 
-apiRouter.get('/trainees', (req, res) => {
+apiRouter.get('/trainees', requireAdminForAllTrainees, (req, res) => {
   const all = req.query.all === 'true';
-  res.json(db.getTrainees(!all));
+  const trainees = db.getTrainees(!all);
+  res.json(all ? trainees : trainees.map(({ applicantUserId: _applicantUserId, consentRecordedAt: _consentRecordedAt, ...trainee }) => trainee));
 });
 
 apiRouter.post('/trainees', authenticate, requireAdmin, (req: AuthenticatedRequest, res: Response) => {
@@ -529,6 +867,8 @@ apiRouter.post('/applications', authenticate, (req: AuthenticatedRequest, res: R
       availability,
       screeningAnswers,
       declarationAccepted,
+      showcaseConsent = false,
+      showcasePhoto,
     } = req.body;
 
     if (!programId) {
@@ -557,6 +897,21 @@ apiRouter.post('/applications', authenticate, (req: AuthenticatedRequest, res: R
 
     if (!declarationAccepted) {
       return res.status(400).json({ error: 'You must certify the accuracy of your application information.' });
+    }
+
+    if (typeof showcaseConsent !== 'boolean') {
+      return res.status(400).json({ error: 'Please provide a valid trainee showcase consent choice.' });
+    }
+    if (showcasePhoto && !showcaseConsent) {
+      return res.status(400).json({ error: 'Consent is required before submitting a public showcase photo.' });
+    }
+    let showcasePhotoUrl = '';
+    if (showcasePhoto) {
+      const parsedPhoto = parsePassportPhoto(showcasePhoto);
+      if (!parsedPhoto || parsedPhoto.buffer.length > 1024 * 1024) {
+        return res.status(400).json({ error: 'Choose a valid JPEG, PNG, or WebP showcase photo no larger than 1 MB.' });
+      }
+      showcasePhotoUrl = `data:${parsedPhoto.mimeType};base64,${parsedPhoto.buffer.toString('base64')}`;
     }
 
     // Generate reference number: OMD-TRN-2026-XXXXX
@@ -588,6 +943,20 @@ apiRouter.post('/applications', authenticate, (req: AuthenticatedRequest, res: R
       submissionDate: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
+
+    if (showcaseConsent) {
+      db.addOrUpdateApplicantShowcase({
+        id: `showcase-${user.id}`,
+        applicantUserId: user.id,
+        consentRecordedAt: new Date().toISOString(),
+        name: `${user.firstName} ${user.lastName}`.trim(),
+        programInterest: program.title,
+        learningGoal: learningGoals.trim(),
+        photoUrl: showcasePhotoUrl,
+        cohort: 'Applicant',
+        isApproved: false,
+      });
+    }
 
     db.logAction(
       'APPLICATION_SUBMITTED',
@@ -643,7 +1012,95 @@ apiRouter.get('/admin/applications', authenticate, requireAdmin, (req, res) => {
     );
   }
 
-  res.json(apps);
+  res.json(apps.map((application) => {
+    const user = db.getUserById(application.userId);
+    return {
+      ...application,
+      applicantFirstName: user?.firstName || application.applicantName.split(/\s+/)[0] || '',
+      applicantLastName: user?.lastName || application.applicantName.split(/\s+/).slice(1).join(' '),
+    };
+  }));
+});
+
+apiRouter.put('/admin/applications/:id/details', authenticate, requireAdmin, (req: AuthenticatedRequest, res: Response) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    phone,
+    educationLevel,
+    experienceLevel,
+    reasonForApplying,
+    learningGoals,
+    availability,
+    screeningAnswers,
+  } = req.body;
+  const textFields = [
+    [firstName, 80],
+    [lastName, 80],
+    [email, 254],
+    [educationLevel, 160],
+    [experienceLevel, 160],
+    [reasonForApplying, 5000],
+    [learningGoals, 5000],
+    [availability, 500],
+  ] as const;
+  if (textFields.some(([value, maxLength]) => typeof value !== 'string' || !value.trim() || value.trim().length > maxLength)) {
+    return res.status(400).json({ error: 'Complete all applicant fields within their allowed lengths.' });
+  }
+  if (typeof phone !== 'string' || phone.trim().length > 40) {
+    return res.status(400).json({ error: 'Enter a valid phone number (up to 40 characters).' });
+  }
+  if (
+    !screeningAnswers || typeof screeningAnswers !== 'object' ||
+    typeof screeningAnswers.priorCodingExperience !== 'string' ||
+    typeof screeningAnswers.weeklyHoursCommitment !== 'string' ||
+    typeof screeningAnswers.hasPersonalLaptop !== 'string' ||
+    [screeningAnswers.priorCodingExperience, screeningAnswers.weeklyHoursCommitment, screeningAnswers.hasPersonalLaptop]
+      .some((value: string) => !value.trim() || value.trim().length > 500)
+  ) {
+    return res.status(400).json({ error: 'Complete all applicant screening answers.' });
+  }
+  const normalizedEmail = email.trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+    return res.status(400).json({ error: 'Enter a valid applicant email address.' });
+  }
+  const application = db.getApplicationById(req.params.id);
+  if (!application) return res.status(404).json({ error: 'Application not found.' });
+  const user = db.getUserById(application.userId);
+  if (!user || user.role !== 'trainee') return res.status(404).json({ error: 'Applicant account not found.' });
+  const emailOwner = db.getUserByEmail(normalizedEmail);
+  if (emailOwner && emailOwner.id !== user.id) {
+    return res.status(409).json({ error: 'Another account already uses this email address.' });
+  }
+  db.updateTraineeAccount(user.id, {
+    firstName: firstName.trim(),
+    lastName: lastName.trim(),
+    email: normalizedEmail,
+    phone: phone.trim(),
+  });
+  const updated = db.updateApplication(application.id, {
+    educationLevel: educationLevel.trim(),
+    experienceLevel: experienceLevel.trim(),
+    reasonForApplying: reasonForApplying.trim(),
+    learningGoals: learningGoals.trim(),
+    availability: availability.trim(),
+    screeningAnswers: {
+      priorCodingExperience: screeningAnswers.priorCodingExperience.trim(),
+      weeklyHoursCommitment: screeningAnswers.weeklyHoursCommitment.trim(),
+      hasPersonalLaptop: screeningAnswers.hasPersonalLaptop.trim(),
+    },
+  });
+  if (!updated) return res.status(404).json({ error: 'Application not found.' });
+  db.logAction('APPLICATION_DETAILS_UPDATED', `Applicant details updated for application ${application.id}`, req.user!.id);
+  res.json({
+    ...updated,
+    userEmail: normalizedEmail,
+    applicantName: `${firstName.trim()} ${lastName.trim()}`.trim(),
+    applicantFirstName: firstName.trim(),
+    applicantLastName: lastName.trim(),
+    applicantPhone: phone.trim(),
+  });
 });
 
 apiRouter.put('/admin/applications/:id/status', authenticate, requireAdmin, (req: AuthenticatedRequest, res: Response) => {

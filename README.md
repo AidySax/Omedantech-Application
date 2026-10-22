@@ -68,6 +68,7 @@ This project brings the firm's public-facing website and training application pr
 ### Account and authentication
 
 - Role-based account registration and login for administrators, staff, and trainees.
+- Required private JPEG, PNG, or WebP passport photograph for new trainee registrations.
 - Unique email validation.
 - Password hashing.
 - Server-side authorization for administrator and assigned-program staff actions.
@@ -77,6 +78,7 @@ This project brings the firm's public-facing website and training application pr
 
 - Program-specific application forms.
 - Applicant profile and learning interests.
+- Optional trainee-showcase opt-in during application, with a separate optional showcase photo and administrator approval before public display.
 - Optional supporting-document upload, if enabled.
 - Application review before submission.
 - Unique application reference numbers.
@@ -91,6 +93,7 @@ This project brings the firm's public-facing website and training application pr
 - Available training programs.
 - Submitted applications and reference numbers.
 - Application statuses and history.
+- Training sessions for accepted programs, with assignment instructions, written submissions, scores, trainer feedback, and progress tracking.
 - Notifications and account settings.
 
 ### Administrator dashboard
@@ -98,10 +101,12 @@ This project brings the firm's public-facing website and training application pr
 - Staff account provisioning and program assignments.
 - Training program creation, editing, publishing, closing, and archiving.
 - Applicant and application management.
-- Application review and status updates.
+- Application review, applicant-detail editing, and status updates.
 - Team profile and trainee showcase management.
 - Service and website content management.
 - System-wide attendance and class-performance oversight.
+- Program assignments, trainee submissions, scoring, and training-progress monitoring across all programs.
+- Trainee account contact-detail editing, restricted passport-photo viewing, one-time password resets, and permanent deletion of linked trainee records.
 - Contact message management, audit logs, and authorized application exports in Excel (.xlsx), PDF, or CSV format.
 
 ### Staff portal
@@ -109,6 +114,9 @@ This project brings the firm's public-facing website and training application pr
 - Access only to programs assigned by an administrator.
 - Manage accepted trainees enrolled in assigned programs.
 - Record attendance, tasks handled, assignments, class contributions, feedback, and optional scores.
+- Publish program assignments, review trainee responses, and score submissions to update each trainee's training progress.
+
+Training progress is the percentage of points earned across published assignments for an accepted program. Trainees can update an ungraded submission; after it is scored, the submission is locked. Assignment responses are submitted as text in the trainee dashboard.
 
 ## OmedanTech Services
 
@@ -322,6 +330,8 @@ Check that:
 - An unauthenticated user cannot submit an application.
 - The selected training program is preserved after login or registration.
 - A submitted application is persisted and appears in the applicant dashboard.
+- An accepted trainee can view program assignments, submit work, and see scores and updated progress.
+- Assigned staff and administrators can publish assignments, review submissions, and score trainees; unauthorized users cannot access program submissions.
 - An applicant cannot view another applicant's records.
 - Administrative actions require the correct permissions.
 
@@ -340,6 +350,10 @@ There are **no shared or hard-coded demo administrator or staff credentials**. T
 After signing in, an administrator can use **Staff & Access** in the Admin Console to create staff logins. Select a position—Managing Director, Full-Stack Developer, UI/UX Designer, Front Desk, Junior Developer, or Project Manager—and assign the programs the staff member is responsible for. Share the staff email and initial password privately. Staff sign in at `/login` and can manage only their assigned programs.
 
 Trainees create their own account at `/register` (also linked from the login page), then sign in at `/login` with their registered email and password. Application submission and the trainee dashboard require a trainee account.
+
+New trainee registrations must include a JPEG, PNG, or WebP passport photograph up to 5 MB and explicit consent for its administrative use. The image is stored under the private `data/private/passports/` directory, excluded from version control, and served only through an authenticated administrator endpoint. Back up and protect this directory alongside the database; do not place passport images in public assets.
+
+Administrators can manage registered accounts from **Trainee Accounts**. They can edit contact details, view passport photographs, issue a temporary password that is displayed once, or permanently delete a trainee account and its linked applications, attendance, performance, and training submissions. Passwords remain one-way hashed and are never viewable. Permanent deletion also removes the passport photograph and personal references from audit details.
 
 The example values in `.env.example` are placeholders, not usable credentials. Existing installations that used former demo administrator credentials should configure a real bootstrap administrator in `.env`; do not reuse or publish demo passwords.
 

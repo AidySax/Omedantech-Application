@@ -19,6 +19,14 @@ async function startServer() {
   // API router
   app.use('/api', apiRouter);
 
+  app.use('/src/assets/images', express.static(path.resolve(__dirname, 'src', 'assets', 'images'), {
+    setHeaders: (res, filePath) => {
+      if (filePath.toLowerCase().endsWith('.jfif')) {
+        res.setHeader('Content-Type', 'image/jpeg');
+      }
+    },
+  }));
+
   // Serve static assets or mount Vite
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, 'dist')));
@@ -40,7 +48,7 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[OmedanTech] Server running at http://0.0.0.0:${PORT}`);
+    console.log(`[OmedanTech] Server running at http://localhost:${PORT}`);
   });
 }
 

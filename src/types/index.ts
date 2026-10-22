@@ -48,6 +48,38 @@ export interface PerformanceRecord {
   createdAt: string;
 }
 
+export interface TrainingAssignment {
+  id: string;
+  programId: string;
+  title: string;
+  instructions: string;
+  dueDate: string;
+  maxPoints: number;
+  createdBy: string;
+  createdAt: string;
+}
+
+export interface TrainingSubmission {
+  id: string;
+  assignmentId: string;
+  traineeId: string;
+  response: string;
+  submittedAt: string;
+  score?: number;
+  feedback?: string;
+  gradedAt?: string;
+  gradedBy?: string;
+}
+
+export interface TrainingSession {
+  programId: string;
+  programTitle: string;
+  progressPercent: number;
+  earnedPoints: number;
+  possiblePoints: number;
+  assignments: Array<TrainingAssignment & { submission?: TrainingSubmission }>;
+}
+
 export interface AuthSession {
   token: string;
   user: User;
@@ -81,6 +113,8 @@ export interface TeamMember {
 
 export interface TraineeShowcase {
   id: string;
+  applicantUserId?: string;
+  consentRecordedAt?: string;
   name: string;
   programInterest: string;
   learningGoal: string;
@@ -120,6 +154,8 @@ export interface Application {
   userId: string;
   userEmail: string;
   applicantName: string;
+  applicantFirstName?: string;
+  applicantLastName?: string;
   applicantPhone: string;
   programId: string;
   programTitle: string;

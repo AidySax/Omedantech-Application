@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Application, ApplicationStatus, ApplicationStatusHistory } from '../types';
+import { TraineeTrainingSection } from '../components/training/TraineeTrainingSection';
 
 export const ApplicantDashboardPage: React.FC = () => {
   const { user, token, logout } = useAuth();
@@ -161,6 +162,8 @@ export const ApplicantDashboardPage: React.FC = () => {
             </button>
           </div>
         </div>
+
+        <TraineeTrainingSection token={token} />
 
         {/* Dashboard Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

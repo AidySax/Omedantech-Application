@@ -14,6 +14,9 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { TrainingProgram, Application } from '../types';
 
+const MAX_SHOWCASE_PHOTO_SIZE = 1024 * 1024;
+const ACCEPTED_SHOWCASE_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
 export const ApplicationApplyPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const { user, token, setRedirectIntent } = useAuth();
@@ -39,6 +42,8 @@ export const ApplicationApplyPage: React.FC = () => {
     hasPersonalLaptop: 'Yes, modern laptop available',
   });
   const [declarationAccepted, setDeclarationAccepted] = useState(false);
+  const [showcaseConsent, setShowcaseConsent] = useState(false);
+  const [showcasePhoto, setShowcasePhoto] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch Program
@@ -209,6 +214,18 @@ export const ApplicationApplyPage: React.FC = () => {
     setIsSubmitting(true);
 
     try {
+      let showcasePhotoData = '';
+      if (showcaseConsent && showcasePhoto) {
+        showcasePhotoData = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => typeof reader.result === 'string'
+            ? resolve(reader.result)
+            : reject(new Error('Unable to read the selected showcase photo.'));
+          reader.onerror = () => reject(new Error('Unable to read the selected showcase photo.'));
+          reader.readAsDataURL(showcasePhoto);
+        });
+      }
+
       const res = await fetch('/api/applications', {
         method: 'POST',
         headers: {
@@ -224,6 +241,8 @@ export const ApplicationApplyPage: React.FC = () => {
           availability,
           screeningAnswers,
           declarationAccepted,
+          showcaseConsent,
+          ...(showcasePhotoData ? { showcasePhoto: showcasePhotoData } : {}),
         }),
       });
 
@@ -234,8 +253,8 @@ export const ApplicationApplyPage: React.FC = () => {
       } else {
         setSubmittedApp(data.application);
       }
-    } catch {
-      setErrorMsg('Network error. Please try again.');
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : 'Network error. Please try again.');
       setIsSubmitting(false);
     }
   };
@@ -519,6 +538,12 @@ export const ApplicationApplyPage: React.FC = () => {
                   </div>
                 </div>
 
+                {showcaseConsent && (
+                  <p className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-800">
+                    Your trainee showcase profile will be submitted for administrator review and will remain private unless approved.
+                  </p>
+                )}
+
                 <div>
                   <span className="text-gray-500 block font-semibold mb-0.5">Motivation Statement:</span>
                   <p className="text-gray-700 bg-white p-2.5 rounded border border-gray-200">{reasonForApplying}</p>
@@ -543,6 +568,54 @@ export const ApplicationApplyPage: React.FC = () => {
                     <strong>Declaration of Accuracy:</strong> I hereby certify that the information provided in this application is accurate and true to the best of my knowledge. I understand that submitting false details may invalidate my application.
                   </span>
                 </label>
+              </div>
+
+              <div className="space-y-3 rounded-xl border border-blue-100 bg-blue-50/40 p-4">
+                <label className="flex items-start gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={showcaseConsent}
+                    onChange={(event) => {
+                      setShowcaseConsent(event.target.checked);
+                      if (!event.target.checked) setShowcasePhoto(null);
+                    }}
+                    className="mt-0.5 rounded border-gray-300 text-[#155EEF] focus:ring-[#155EEF]"
+                  />
+                  <span className="text-xs text-gray-700 leading-snug">
+                    I agree that my name, program interest, learning goal, and optional photo may be considered for the public trainee showcase. My entry will remain hidden unless an administrator approves it.
+                  </span>
+                </label>
+                {showcaseConsent && (
+                  <div>
+                    <label htmlFor="showcase-photo" className="block text-xs font-semibold text-gray-700 mb-1">
+                      Optional showcase photo
+                    </label>
+                    <input
+                      id="showcase-photo"
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      onChange={(event) => {
+                        const file = event.target.files?.[0] || null;
+                        if (file && !ACCEPTED_SHOWCASE_PHOTO_TYPES.includes(file.type)) {
+                          setErrorMsg('Choose a JPEG, PNG, or WebP showcase photo.');
+                          event.target.value = '';
+                          setShowcasePhoto(null);
+                          return;
+                        }
+                        if (file && file.size > MAX_SHOWCASE_PHOTO_SIZE) {
+                          setErrorMsg('Showcase photos must be 1 MB or smaller.');
+                          event.target.value = '';
+                          setShowcasePhoto(null);
+                          return;
+                        }
+                        setErrorMsg('');
+                        setShowcasePhoto(file);
+                      }}
+                      className="w-full text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-blue-100 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-[#155EEF]"
+                    />
+                    <p className="mt-1 text-[11px] text-gray-500">JPEG, PNG, or WebP, up to 1 MB. Your private passport photo is not used.</p>
+                  </div>
+                )}
               </div>
 
               <div className="pt-4 flex justify-between items-center">

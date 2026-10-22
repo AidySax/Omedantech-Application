@@ -30,6 +30,8 @@ import {
 } from '../../types';
 import { AdminStaffManagement } from './AdminStaffManagement';
 import { AdminClassRecords } from './AdminClassRecords';
+import { AdminTraineeAccounts } from './AdminTraineeAccounts';
+import { TrainingAssignmentManager } from '../../components/training/TrainingAssignmentManager';
 
 type ExportFormat = 'csv' | 'excel' | 'pdf';
 
@@ -89,7 +91,7 @@ export const AdminDashboardPage: React.FC = () => {
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<
-    'applications' | 'programs' | 'team' | 'trainees' | 'messages' | 'audit' | 'staff' | 'class-records'
+    'applications' | 'programs' | 'team' | 'trainees' | 'messages' | 'audit' | 'staff' | 'class-records' | 'training' | 'trainee-accounts'
   >('applications');
 
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -112,6 +114,9 @@ export const AdminDashboardPage: React.FC = () => {
   const [newStatus, setNewStatus] = useState<ApplicationStatus>('Under Review');
   const [reviewerNotes, setReviewerNotes] = useState('');
   const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [editingApplicantDetails, setEditingApplicantDetails] = useState(false);
+  const [savingApplicantDetails, setSavingApplicantDetails] = useState(false);
+  const [applicantDetailsError, setApplicantDetailsError] = useState('');
 
   // Edit Team Member Modal
   const [editingTeamMember, setEditingTeamMember] = useState<TeamMember | null>(null);
@@ -166,7 +171,10 @@ export const AdminDashboardPage: React.FC = () => {
   };
 
   const fetchTrainees = () => {
-    fetch('/api/trainees?all=true')
+    if (!token) return;
+    fetch('/api/trainees?all=true', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) setTrainees(data);
@@ -203,7 +211,7 @@ export const AdminDashboardPage: React.FC = () => {
     fetchTrainees();
     fetchMessages();
     fetchAuditLogs();
-  }, [token, statusFilter]);
+  }, [token, statusFilter, searchQuery]);
 
   // Review Application status update
   const handleUpdateAppStatus = async () => {
@@ -232,6 +240,43 @@ export const AdminDashboardPage: React.FC = () => {
       console.error(err);
     } finally {
       setUpdatingStatus(false);
+    }
+  };
+
+  const handleSaveApplicantDetails = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!reviewApp || !token) return;
+    setSavingApplicantDetails(true);
+    setApplicantDetailsError('');
+    try {
+      const nameParts = reviewApp.applicantName.trim().split(/\s+/);
+      const firstName = reviewApp.applicantFirstName || nameParts[0] || '';
+      const lastName = reviewApp.applicantLastName || nameParts.slice(1).join(' ');
+      const response = await fetch(`/api/admin/applications/${encodeURIComponent(reviewApp.id)}/details`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email: reviewApp.userEmail,
+          phone: reviewApp.applicantPhone || '',
+          educationLevel: reviewApp.educationLevel,
+          experienceLevel: reviewApp.experienceLevel,
+          reasonForApplying: reviewApp.reasonForApplying,
+          learningGoals: reviewApp.learningGoals,
+          availability: reviewApp.availability,
+          screeningAnswers: reviewApp.screeningAnswers,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Unable to update applicant details.');
+      setReviewApp(data);
+      setApplications((current) => current.map((application) => application.id === data.id ? data : application));
+      setEditingApplicantDetails(false);
+    } catch (err) {
+      setApplicantDetailsError(err instanceof Error ? err.message : 'Unable to update applicant details.');
+    } finally {
+      setSavingApplicantDetails(false);
     }
   };
 
@@ -625,10 +670,32 @@ export const AdminDashboardPage: React.FC = () => {
           >
             Class Records
           </button>
+          <button
+            onClick={() => setActiveTab('training')}
+            className={`py-2 px-4 rounded-lg text-xs font-bold transition-colors ${
+              activeTab === 'training'
+                ? 'bg-[#155EEF] text-white shadow-xs'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            Training Progress
+          </button>
+          <button
+            onClick={() => setActiveTab('trainee-accounts')}
+            className={`py-2 px-4 rounded-lg text-xs font-bold transition-colors ${
+              activeTab === 'trainee-accounts'
+                ? 'bg-[#155EEF] text-white shadow-xs'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            Trainee Accounts
+          </button>
         </div>
 
         {activeTab === 'staff' && <AdminStaffManagement token={token} />}
         {activeTab === 'class-records' && <AdminClassRecords token={token} />}
+        {activeTab === 'training' && <TrainingAssignmentManager token={token} role="admin" />}
+        {activeTab === 'trainee-accounts' && <AdminTraineeAccounts token={token} />}
 
         {/* TAB 1: APPLICATIONS */}
         {activeTab === 'applications' && (
@@ -943,9 +1010,12 @@ export const AdminDashboardPage: React.FC = () => {
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
                         t.isApproved ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-600'
                       }`}>
-                        {t.isApproved ? 'Published' : 'Hidden'}
+                        {t.isApproved ? 'Published' : t.applicantUserId ? 'Pending approval' : 'Hidden'}
                       </span>
                     </div>
+                    {t.photoUrl && (
+                      <img src={t.photoUrl} alt={`${t.name} showcase preview`} className="mb-2 h-16 w-16 rounded-full object-cover" />
+                    )}
                     <span className="text-xs text-[#155EEF] font-semibold block">{t.programInterest}</span>
                     <p className="text-xs text-gray-600 italic mt-2 line-clamp-2">&ldquo;{t.learningGoal}&rdquo;</p>
                   </div>
@@ -1034,29 +1104,99 @@ export const AdminDashboardPage: React.FC = () => {
                   </h3>
                   <p className="text-xs text-gray-500">{reviewApp.programTitle}</p>
                 </div>
-                <button onClick={() => setReviewApp(null)} className="p-1 text-gray-400 hover:text-gray-700">
-                  &times;
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (editingApplicantDetails) {
+                        const savedApplication = applications.find((application) => application.id === reviewApp.id);
+                        if (savedApplication) setReviewApp(savedApplication);
+                      }
+                      setEditingApplicantDetails((current) => !current);
+                      setApplicantDetailsError('');
+                    }}
+                    className="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-[#155EEF] hover:bg-blue-100"
+                  >
+                    {editingApplicantDetails ? 'Cancel Edit' : 'Edit Applicant Details'}
+                  </button>
+                  <button onClick={() => { setReviewApp(null); setEditingApplicantDetails(false); }} className="p-1 text-gray-400 hover:text-gray-700">
+                    &times;
+                  </button>
+                </div>
               </div>
 
               <div className="py-4 space-y-4 text-xs">
-                <div className="p-3 bg-gray-50 rounded-lg space-y-1">
-                  <div><strong>Email:</strong> {reviewApp.userEmail}</div>
-                  <div><strong>Phone:</strong> {reviewApp.applicantPhone || 'N/A'}</div>
-                  <div><strong>Education:</strong> {reviewApp.educationLevel}</div>
-                  <div><strong>Skill Level:</strong> {reviewApp.experienceLevel}</div>
-                  <div><strong>Weekly Commitment:</strong> {reviewApp.screeningAnswers?.weeklyHoursCommitment}</div>
-                </div>
+                {editingApplicantDetails ? (
+                  <form onSubmit={(event) => void handleSaveApplicantDetails(event)} className="space-y-3 rounded-lg border border-blue-100 bg-blue-50/40 p-3">
+                    {applicantDetailsError && <p role="alert" className="rounded border border-red-200 bg-red-50 p-2 text-red-700">{applicantDetailsError}</p>}
+                    <div className="grid grid-cols-2 gap-3">
+                      <label className="font-semibold text-gray-800">First name
+                        <input required maxLength={80} value={reviewApp.applicantFirstName || ''} onChange={(event) => setReviewApp({ ...reviewApp, applicantFirstName: event.target.value, applicantName: `${event.target.value} ${reviewApp.applicantLastName || ''}`.trim() })} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2" />
+                      </label>
+                      <label className="font-semibold text-gray-800">Last name
+                        <input required maxLength={80} value={reviewApp.applicantLastName || ''} onChange={(event) => setReviewApp({ ...reviewApp, applicantLastName: event.target.value, applicantName: `${reviewApp.applicantFirstName || ''} ${event.target.value}`.trim() })} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2" />
+                      </label>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <label className="font-semibold text-gray-800">Email
+                        <input required type="email" maxLength={254} value={reviewApp.userEmail} onChange={(event) => setReviewApp({ ...reviewApp, userEmail: event.target.value })} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2" />
+                      </label>
+                      <label className="font-semibold text-gray-800">Phone
+                        <input maxLength={40} value={reviewApp.applicantPhone} onChange={(event) => setReviewApp({ ...reviewApp, applicantPhone: event.target.value })} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2" />
+                      </label>
+                      <label className="font-semibold text-gray-800">Education
+                        <input required maxLength={160} value={reviewApp.educationLevel} onChange={(event) => setReviewApp({ ...reviewApp, educationLevel: event.target.value })} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2" />
+                      </label>
+                      <label className="font-semibold text-gray-800">Experience level
+                        <input required maxLength={160} value={reviewApp.experienceLevel} onChange={(event) => setReviewApp({ ...reviewApp, experienceLevel: event.target.value })} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2" />
+                      </label>
+                      <label className="font-semibold text-gray-800">Availability
+                        <input required maxLength={500} value={reviewApp.availability} onChange={(event) => setReviewApp({ ...reviewApp, availability: event.target.value })} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2" />
+                      </label>
+                      <label className="font-semibold text-gray-800">Weekly commitment
+                        <input required maxLength={500} value={reviewApp.screeningAnswers?.weeklyHoursCommitment || ''} onChange={(event) => setReviewApp({ ...reviewApp, screeningAnswers: { ...reviewApp.screeningAnswers, weeklyHoursCommitment: event.target.value } })} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2" />
+                      </label>
+                    </div>
+                    <label className="block font-semibold text-gray-800">Prior coding experience
+                      <input required maxLength={500} value={reviewApp.screeningAnswers?.priorCodingExperience || ''} onChange={(event) => setReviewApp({ ...reviewApp, screeningAnswers: { ...reviewApp.screeningAnswers, priorCodingExperience: event.target.value } })} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2" />
+                    </label>
+                    <label className="block font-semibold text-gray-800">Personal laptop
+                      <input required maxLength={500} value={reviewApp.screeningAnswers?.hasPersonalLaptop || ''} onChange={(event) => setReviewApp({ ...reviewApp, screeningAnswers: { ...reviewApp.screeningAnswers, hasPersonalLaptop: event.target.value } })} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2" />
+                    </label>
+                    <label className="block font-semibold text-gray-800">Motivation statement
+                      <textarea required maxLength={5000} rows={3} value={reviewApp.reasonForApplying} onChange={(event) => setReviewApp({ ...reviewApp, reasonForApplying: event.target.value })} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2" />
+                    </label>
+                    <label className="block font-semibold text-gray-800">Learning goals
+                      <textarea required maxLength={5000} rows={3} value={reviewApp.learningGoals} onChange={(event) => setReviewApp({ ...reviewApp, learningGoals: event.target.value })} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2" />
+                    </label>
+                    <button type="submit" disabled={savingApplicantDetails} className="rounded-lg bg-[#155EEF] px-4 py-2 font-bold text-white disabled:opacity-50">
+                      {savingApplicantDetails ? 'Saving details…' : 'Save Applicant Details'}
+                    </button>
+                  </form>
+                ) : (
+                  <>
+                    <div className="p-3 bg-gray-50 rounded-lg space-y-1">
+                      <div><strong>Email:</strong> {reviewApp.userEmail}</div>
+                      <div><strong>Phone:</strong> {reviewApp.applicantPhone || 'N/A'}</div>
+                      <div><strong>Education:</strong> {reviewApp.educationLevel}</div>
+                      <div><strong>Skill Level:</strong> {reviewApp.experienceLevel}</div>
+                      <div><strong>Availability:</strong> {reviewApp.availability}</div>
+                      <div><strong>Prior Coding Experience:</strong> {reviewApp.screeningAnswers?.priorCodingExperience}</div>
+                      <div><strong>Weekly Commitment:</strong> {reviewApp.screeningAnswers?.weeklyHoursCommitment}</div>
+                      <div><strong>Personal Laptop:</strong> {reviewApp.screeningAnswers?.hasPersonalLaptop}</div>
+                    </div>
 
-                <div>
-                  <strong className="text-gray-800 block mb-1">Motivation Statement:</strong>
-                  <p className="bg-white p-2.5 rounded border border-gray-200 text-gray-700">{reviewApp.reasonForApplying}</p>
-                </div>
+                    <div>
+                      <strong className="text-gray-800 block mb-1">Motivation Statement:</strong>
+                      <p className="whitespace-pre-wrap bg-white p-2.5 rounded border border-gray-200 text-gray-700">{reviewApp.reasonForApplying}</p>
+                    </div>
 
-                <div>
-                  <strong className="text-gray-800 block mb-1">Learning Goals:</strong>
-                  <p className="bg-white p-2.5 rounded border border-gray-200 text-gray-700">{reviewApp.learningGoals}</p>
-                </div>
+                    <div>
+                      <strong className="text-gray-800 block mb-1">Learning Goals:</strong>
+                      <p className="whitespace-pre-wrap bg-white p-2.5 rounded border border-gray-200 text-gray-700">{reviewApp.learningGoals}</p>
+                    </div>
+                  </>
+                )}
 
                 <div className="pt-3 border-t border-gray-100 space-y-3">
                   <div>
@@ -1122,19 +1262,18 @@ export const AdminDashboardPage: React.FC = () => {
                     {teamMemberError}
                   </p>
                 )}
-                {!editingTeamMember.id && (
-                  <div>
-                    <label className="block font-semibold text-gray-700 mb-1">Name</label>
-                    <input
-                      required
-                      type="text"
-                      value={editingTeamMember.name}
-                      onChange={(e) => setEditingTeamMember({ ...editingTeamMember, name: e.target.value })}
-                      className="w-full p-2 border border-gray-300 rounded-lg"
-                      placeholder="Team member's full name"
-                    />
-                  </div>
-                )}
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">Name</label>
+                  <input
+                    required
+                    type="text"
+                    maxLength={120}
+                    value={editingTeamMember.name}
+                    onChange={(e) => setEditingTeamMember({ ...editingTeamMember, name: e.target.value })}
+                    className="w-full p-2 border border-gray-300 rounded-lg"
+                    placeholder="Team member's full name"
+                  />
+                </div>
                 <div>
                   <label className="block font-semibold text-gray-700 mb-1">Official Portrait URL</label>
                   <input

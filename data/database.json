@@ -38,6 +38,70 @@
       "createdAt": "2026-10-17T00:33:04.093Z",
       "salt": "18f7d070fa78a320300a91a342e93d25",
       "passwordHash": "ec8fb99c6cc6dd7a5c12a4f412e2845723dca0ad872470b2e8ca3e2c81ad88c9d8a1f7d0d62e33dc932b5de7b8acd04294ace049e8c1389e8ae92ed72ef71e39"
+    },
+    {
+      "id": "usr-1792321649240-hgin",
+      "firstName": "esther",
+      "lastName": "johne",
+      "email": "ej875556@gmail.com",
+      "phone": "08085514609",
+      "role": "trainee",
+      "isEmailVerified": true,
+      "createdAt": "2026-10-18T11:07:29.240Z",
+      "salt": "d9ab93742240ed23efebf5b62c6b7ee4",
+      "passwordHash": "b106b1ae1bd48ea03a799e9027af26d0d0430d4872fe215129a9418d2231b29426b62a2ad9b71fb847fdccf38c8d1508cb2bbdc09141a4215e2034c2dbc4d3a9",
+      "assignedProgramIds": []
+    },
+    {
+      "id": "usr-1792370103207-xct3",
+      "firstName": "Efenibietke",
+      "lastName": "Udonnah",
+      "email": "udonnah@gmail.com",
+      "phone": "09163908639",
+      "role": "trainee",
+      "isEmailVerified": true,
+      "createdAt": "2026-10-19T00:35:03.208Z",
+      "salt": "d7a97cc113fdbaa1c42bbbfec1c68f76",
+      "passwordHash": "be574da93f261da913f6404bc96cc7189a77f6a5ebccab3ffb474279d78e3d3d8072b8708534369c1492de48706094bbd26f9325b34be45cb15277f7c4953554",
+      "assignedProgramIds": []
+    },
+    {
+      "id": "usr-1792646442003-9bb3",
+      "firstName": "Don",
+      "lastName": "Ntuen",
+      "email": "donntuen@gmail.com",
+      "phone": "09163314491",
+      "role": "trainee",
+      "isEmailVerified": true,
+      "createdAt": "2026-10-22T05:20:42.014Z",
+      "salt": "dd0b94ff70c8d302e79b895ee0cb3f37",
+      "passwordHash": "716b130e7b82f8a4e4067a13f8a956a377856ef604cf6170de9579123a889c3d7cf6306972db0f7c243336910f502d9cf298eac1d8910d411dcaf22d70ab822f",
+      "assignedProgramIds": []
+    },
+    {
+      "id": "usr-1792648907309-ctm6",
+      "firstName": "Emmanuel",
+      "lastName": "Aniefiok",
+      "email": "emmasunday@gmail.com",
+      "phone": "08066827417",
+      "role": "trainee",
+      "isEmailVerified": true,
+      "createdAt": "2026-10-22T06:01:47.323Z",
+      "salt": "a21384f7a157264d4e2617c3bb530203",
+      "passwordHash": "27e80f058cf45175013d38dbd928255df7d1b19445110045551caf0f26141a092a0d2d43866accecf8e043e9e9c9ded925d463e0d7ef48bc6971ba17004a4788",
+      "assignedProgramIds": []
+    },
+    {
+      "id": "usr-1792652901622-1942",
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "email": "jane@example.com",
+      "phone": "123",
+      "role": "trainee",
+      "isEmailVerified": true,
+      "createdAt": "2026-10-22T07:08:21.634Z",
+      "salt": "db7e480c0aa0ab941b4104edb8b04547",
+      "passwordHash": "913feecdce9b0db341ecbe63e88141b83aec29becbeddb6f207b6e3989eb56e1beb1e20e6395361465e21b5ab07c8ed929b25f9499168be8fa7f140d91440f80"
     }
   ],
   "services": [
@@ -150,11 +214,11 @@
   "teamMembers": [
     {
       "id": "tm-1",
-      "name": "Comrade Idara Udofia",
+      "name": "Comr. Idara Udofia",
       "position": "Managing Director",
-      "professionalTitle": "Software Engineer",
+      "professionalTitle": "Senior Software Engineer",
       "description": "Leads the company's strategic direction, innovation initiatives, and overall technology operations.",
-      "photoUrl": "/src/assets/images/team_director_idara_1792132762948.jpg",
+      "photoUrl": "/src/assets/images/team_director_idara_1792132762948.jfif",
       "order": 1,
       "socialLinks": {
         "linkedin": "https://linkedin.com"
@@ -162,11 +226,11 @@
     },
     {
       "id": "tm-2",
-      "name": "Comrade Imoh Ben",
-      "position": "Full-Stack Developer",
-      "professionalTitle": "Senior Engineer",
+      "name": "Insp.  Imoh Ben",
+      "position": "Full-Stack Web Developer",
+      "professionalTitle": "Senior Software Engineer",
       "description": "Supports the design and development of end-to-end software applications, backend services, and modern web solutions.",
-      "photoUrl": "/src/assets/images/team_senior_dev_imoh_1792132763338.jpg",
+      "photoUrl": "/src/assets/images/team_senior_dev_imoh_1792132763338.jfif",
       "order": 2,
       "socialLinks": {
         "github": "https://github.com"
@@ -178,7 +242,7 @@
       "position": "Front Desk Officer",
       "professionalTitle": "Customer Care",
       "description": "Supports inquiries, communicates with visitors, and helps applicants navigate the firm's services and training opportunities.",
-      "photoUrl": "/src/assets/images/team_frontdesk_comfort_1792132765176.jpg",
+      "photoUrl": "/src/assets/images/team_frontdesk_comfort_1792132765176.jfif",
       "order": 3
     },
     {
@@ -187,12 +251,12 @@
       "position": "UI/UX Designer",
       "professionalTitle": "Designer",
       "description": "Creates intuitive user experiences, attractive interfaces, and consistent visual designs for digital products.",
-      "photoUrl": "/src/assets/images/team_designer_theresa_1792132779604.jpg",
+      "photoUrl": "/src/assets/images/team_designer_theresa_1792132779604.jfif",
       "order": 4
     },
     {
       "id": "tm-5",
-      "name": "Temple Matthew",
+      "name": "Efenibietke Udonnah",
       "position": "Junior Developer",
       "professionalTitle": "Junior Developer",
       "description": "Contributes to software development, feature implementation, testing, and ongoing product improvement.",
@@ -443,9 +507,119 @@
         "hasPersonalLaptop": "Yes, modern laptop available"
       },
       "declarationAccepted": true,
-      "status": "Submitted",
+      "status": "Accepted",
       "submissionDate": "2026-10-17T00:01:07.187Z",
-      "updatedAt": "2026-10-17T00:01:07.187Z"
+      "updatedAt": "2026-10-18T11:51:39.143Z",
+      "reviewerNotes": "",
+      "reviewedBy": "System Administrator"
+    },
+    {
+      "id": "app-1792322682245",
+      "referenceNo": "OMD-TRN-2026-20373",
+      "userId": "usr-1792321649240-hgin",
+      "userEmail": "ej875556@gmail.com",
+      "applicantName": "esther johne",
+      "applicantPhone": "08085514609",
+      "programId": "prog-5",
+      "programTitle": "UI/UX Design & Product Interface",
+      "programSlug": "ui-ux-design",
+      "educationLevel": "Bachelor's Degree",
+      "experienceLevel": "Beginner",
+      "reasonForApplying": "short and direct",
+      "learningGoals": "professional development",
+      "availability": "Weekday Evenings & Weekends",
+      "screeningAnswers": {
+        "priorCodingExperience": "Basic familiarity",
+        "weeklyHoursCommitment": "10-15 hours",
+        "hasPersonalLaptop": "Yes, modern laptop available"
+      },
+      "declarationAccepted": true,
+      "status": "Under Review",
+      "submissionDate": "2026-10-18T11:24:42.245Z",
+      "updatedAt": "2026-10-22T07:25:46.939Z",
+      "reviewerNotes": "",
+      "reviewedBy": "System Administrator"
+    },
+    {
+      "id": "app-1792372705645",
+      "referenceNo": "OMD-TRN-2026-95426",
+      "userId": "usr-1792370103207-xct3",
+      "userEmail": "udonnah@gmail.com",
+      "applicantName": "Efenibietke Udonnah",
+      "applicantPhone": "09163908639",
+      "programId": "prog-2",
+      "programTitle": "AI Development & Machine Learning",
+      "programSlug": "ai-development",
+      "educationLevel": "High School / Secondary",
+      "experienceLevel": "Beginner",
+      "reasonForApplying": "To build more confidence in AI development",
+      "learningGoals": "To manage and control AI development",
+      "availability": "Full-Time Weekday Intensive",
+      "screeningAnswers": {
+        "priorCodingExperience": "Basic familiarity",
+        "weeklyHoursCommitment": "6-10 hours",
+        "hasPersonalLaptop": "Yes, shared laptop"
+      },
+      "declarationAccepted": true,
+      "status": "Shortlisted",
+      "submissionDate": "2026-10-19T01:18:25.645Z",
+      "updatedAt": "2026-10-22T06:46:30.595Z",
+      "reviewerNotes": "",
+      "reviewedBy": "System Administrator"
+    },
+    {
+      "id": "app-1792648134351",
+      "referenceNo": "OMD-TRN-2026-87478",
+      "userId": "usr-1792646442003-9bb3",
+      "userEmail": "donntuen@gmail.com",
+      "applicantName": "Don Ntuen",
+      "applicantPhone": "09163314491",
+      "programId": "prog-5",
+      "programTitle": "UI/UX Design & Product Interface",
+      "programSlug": "ui-ux-design",
+      "educationLevel": "High School / Secondary",
+      "experienceLevel": "Beginner",
+      "reasonForApplying": "I want to join this program because of my career of study",
+      "learningGoals": "my key learning goals upon completing this cohort is because what i want to learn from you",
+      "availability": "Weekday Evenings & Weekends",
+      "screeningAnswers": {
+        "priorCodingExperience": "Basic familiarity",
+        "weeklyHoursCommitment": "10-15 hours",
+        "hasPersonalLaptop": "Yes, shared laptop"
+      },
+      "declarationAccepted": true,
+      "status": "Accepted",
+      "submissionDate": "2026-10-22T05:48:54.351Z",
+      "updatedAt": "2026-10-22T06:46:41.359Z",
+      "reviewerNotes": "",
+      "reviewedBy": "System Administrator"
+    },
+    {
+      "id": "app-1792649723064",
+      "referenceNo": "OMD-TRN-2026-53451",
+      "userId": "usr-1792648907309-ctm6",
+      "userEmail": "emmasunday@gmail.com",
+      "applicantName": "Emmanuel Aniefiok",
+      "applicantPhone": "08066827417",
+      "programId": "prog-8",
+      "programTitle": "Product Discovery & Tech Strategy",
+      "programSlug": "product-discovery-strategy",
+      "educationLevel": "Undergraduate Student",
+      "experienceLevel": "Beginner",
+      "reasonForApplying": "I want to join this program because of more technological studies that i will be  learn from you",
+      "learningGoals": "My key learning goals upon completing this cohort is because what i will be learning",
+      "availability": "Weekday Evenings & Weekends",
+      "screeningAnswers": {
+        "priorCodingExperience": "Basic familiarity",
+        "weeklyHoursCommitment": "10-15 hours",
+        "hasPersonalLaptop": "Yes, shared laptop"
+      },
+      "declarationAccepted": true,
+      "status": "Shortlisted",
+      "submissionDate": "2026-10-22T06:15:23.064Z",
+      "updatedAt": "2026-10-22T06:46:52.827Z",
+      "reviewerNotes": "",
+      "reviewedBy": "System Administrator"
     }
   ],
   "statusHistory": [
@@ -457,6 +631,105 @@
       "changedBy": "aidysax@gmail.com",
       "notes": "Application submitted successfully.",
       "timestamp": "2026-10-17T00:01:07.187Z"
+    },
+    {
+      "id": "hist-1792322682245",
+      "applicationId": "app-1792322682245",
+      "oldStatus": "Draft",
+      "newStatus": "Submitted",
+      "changedBy": "ej875556@gmail.com",
+      "notes": "Application submitted successfully.",
+      "timestamp": "2026-10-18T11:24:42.245Z"
+    },
+    {
+      "id": "hist-1792324299143-qwx5",
+      "applicationId": "app-1792195267187",
+      "oldStatus": "Submitted",
+      "newStatus": "Accepted",
+      "changedBy": "admin@omedantech.com",
+      "notes": "Status updated to Accepted",
+      "timestamp": "2026-10-18T11:51:39.143Z"
+    },
+    {
+      "id": "hist-1792324439540-r3va",
+      "applicationId": "app-1792322682245",
+      "oldStatus": "Submitted",
+      "newStatus": "Shortlisted",
+      "changedBy": "admin@omedantech.com",
+      "notes": "Status updated to Shortlisted",
+      "timestamp": "2026-10-18T11:53:59.540Z"
+    },
+    {
+      "id": "hist-1792324484887-mawi",
+      "applicationId": "app-1792322682245",
+      "oldStatus": "Shortlisted",
+      "newStatus": "Rejected",
+      "changedBy": "admin@omedantech.com",
+      "notes": "Status updated to Rejected",
+      "timestamp": "2026-10-18T11:54:44.887Z"
+    },
+    {
+      "id": "hist-1792372705645",
+      "applicationId": "app-1792372705645",
+      "oldStatus": "Draft",
+      "newStatus": "Submitted",
+      "changedBy": "udonnah@gmail.com",
+      "notes": "Application submitted successfully.",
+      "timestamp": "2026-10-19T01:18:25.645Z"
+    },
+    {
+      "id": "hist-1792648134351",
+      "applicationId": "app-1792648134351",
+      "oldStatus": "Draft",
+      "newStatus": "Submitted",
+      "changedBy": "donntuen@gmail.com",
+      "notes": "Application submitted successfully.",
+      "timestamp": "2026-10-22T05:48:54.351Z"
+    },
+    {
+      "id": "hist-1792649723064",
+      "applicationId": "app-1792649723064",
+      "oldStatus": "Draft",
+      "newStatus": "Submitted",
+      "changedBy": "emmasunday@gmail.com",
+      "notes": "Application submitted successfully.",
+      "timestamp": "2026-10-22T06:15:23.064Z"
+    },
+    {
+      "id": "hist-1792651590595-0ak9",
+      "applicationId": "app-1792372705645",
+      "oldStatus": "Submitted",
+      "newStatus": "Shortlisted",
+      "changedBy": "admin@omedantech.com",
+      "notes": "Status updated to Shortlisted",
+      "timestamp": "2026-10-22T06:46:30.595Z"
+    },
+    {
+      "id": "hist-1792651601359-tlil",
+      "applicationId": "app-1792648134351",
+      "oldStatus": "Submitted",
+      "newStatus": "Accepted",
+      "changedBy": "admin@omedantech.com",
+      "notes": "Status updated to Accepted",
+      "timestamp": "2026-10-22T06:46:41.359Z"
+    },
+    {
+      "id": "hist-1792651612827-b6vt",
+      "applicationId": "app-1792649723064",
+      "oldStatus": "Submitted",
+      "newStatus": "Shortlisted",
+      "changedBy": "admin@omedantech.com",
+      "notes": "Status updated to Shortlisted",
+      "timestamp": "2026-10-22T06:46:52.827Z"
+    },
+    {
+      "id": "hist-1792653946939-dd4k",
+      "applicationId": "app-1792322682245",
+      "oldStatus": "Rejected",
+      "newStatus": "Under Review",
+      "changedBy": "admin@omedantech.com",
+      "notes": "Status updated to Under Review",
+      "timestamp": "2026-10-22T07:25:46.939Z"
     }
   ],
   "contactMessages": [
@@ -469,6 +742,16 @@
       "message": "Hello OmedanTech team, I would like to inquire if there is any financial aid or flexible installment option for the Full-Stack Web Development cohort?",
       "status": "new",
       "createdAt": "2026-10-12T09:15:00.000Z"
+    },
+    {
+      "id": "msg-1792317465513",
+      "status": "new",
+      "createdAt": "2026-10-18T09:57:45.513Z",
+      "name": "Idara Idung Udofia",
+      "email": "idaraudofia822@gmail.com",
+      "phone": "+2347040297320",
+      "category": "General Partnership",
+      "message": "Payment system should be intergrated"
     }
   ],
   "siteSettings": {
@@ -552,8 +835,276 @@
       "details": "User signed in: admin@omedantech.com",
       "userId": "usr-admin-bootstrap",
       "timestamp": "2026-10-17T00:36:32.106Z"
+    },
+    {
+      "id": "log-1792317465519",
+      "action": "CONTACT_RECEIVED",
+      "details": "Inquiry received from Idara Idung Udofia (idaraudofia822@gmail.com)",
+      "timestamp": "2026-10-18T09:57:45.519Z"
+    },
+    {
+      "id": "log-1792317779261",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-18T10:02:59.261Z"
+    },
+    {
+      "id": "log-1792318988293",
+      "action": "TEAM_UPDATED",
+      "details": "Team member updated: Comrade Imoh Ben",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-18T10:23:08.293Z"
+    },
+    {
+      "id": "log-1792319003578",
+      "action": "TEAM_UPDATED",
+      "details": "Team member updated: Comrade Idara Udofia",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-18T10:23:23.578Z"
+    },
+    {
+      "id": "log-1792320706632",
+      "action": "TEAM_UPDATED",
+      "details": "Team member updated: Comr. Idara Udofia",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-18T10:51:46.632Z"
+    },
+    {
+      "id": "log-1792320788912",
+      "action": "TEAM_UPDATED",
+      "details": "Team member updated: Insp.  Imoh Ben",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-18T10:53:08.912Z"
+    },
+    {
+      "id": "log-1792321649241",
+      "action": "USER_REGISTERED",
+      "details": "New trainee registered: ej875556@gmail.com",
+      "userId": "usr-1792321649240-hgin",
+      "timestamp": "2026-10-18T11:07:29.241Z"
+    },
+    {
+      "id": "log-1792322682247",
+      "action": "APPLICATION_SUBMITTED",
+      "details": "Application OMD-TRN-2026-20373 submitted by ej875556@gmail.com for UI/UX Design & Product Interface",
+      "userId": "usr-1792321649240-hgin",
+      "timestamp": "2026-10-18T11:24:42.247Z"
+    },
+    {
+      "id": "log-1792324169758",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-18T11:49:29.758Z"
+    },
+    {
+      "id": "log-1792324299146",
+      "action": "APPLICATION_STATUS_UPDATED",
+      "details": "Application OMD-TRN-2026-60260 status changed to Accepted by admin",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-18T11:51:39.146Z"
+    },
+    {
+      "id": "log-1792324439541",
+      "action": "APPLICATION_STATUS_UPDATED",
+      "details": "Application OMD-TRN-2026-20373 status changed to Shortlisted by admin",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-18T11:53:59.541Z"
+    },
+    {
+      "id": "log-1792324453540",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-18T11:54:13.540Z"
+    },
+    {
+      "id": "log-1792324484889",
+      "action": "APPLICATION_STATUS_UPDATED",
+      "details": "Application OMD-TRN-2026-20373 status changed to Rejected by admin",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-18T11:54:44.889Z"
+    },
+    {
+      "id": "log-1792370103209",
+      "action": "USER_REGISTERED",
+      "details": "New trainee registered: udonnah@gmail.com",
+      "userId": "usr-1792370103207-xct3",
+      "timestamp": "2026-10-19T00:35:03.209Z"
+    },
+    {
+      "id": "log-1792372705648",
+      "action": "APPLICATION_SUBMITTED",
+      "details": "Application OMD-TRN-2026-95426 submitted by udonnah@gmail.com for AI Development & Machine Learning",
+      "userId": "usr-1792370103207-xct3",
+      "timestamp": "2026-10-19T01:18:25.648Z"
+    },
+    {
+      "id": "log-1792372840971",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-19T01:20:40.971Z"
+    },
+    {
+      "id": "log-1792373186669",
+      "action": "PASSWORD_RESET_REQUEST",
+      "details": "Reset requested for Theresalawrence504@gmail.com",
+      "timestamp": "2026-10-19T01:26:26.669Z"
+    },
+    {
+      "id": "log-1792373226119",
+      "action": "PASSWORD_RESET_REQUEST",
+      "details": "Reset requested for theresalawrence504@gmail.com",
+      "timestamp": "2026-10-19T01:27:06.119Z"
+    },
+    {
+      "id": "log-1792373260085",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-19T01:27:40.085Z"
+    },
+    {
+      "id": "log-1792373307897",
+      "action": "TEAM_UPDATED",
+      "details": "Team member updated: Efenibietke Udonnah",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-19T01:28:27.897Z"
+    },
+    {
+      "id": "log-1792375089027",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-19T01:58:09.027Z"
+    },
+    {
+      "id": "log-1792646442016",
+      "action": "USER_REGISTERED",
+      "details": "New trainee registered: donntuen@gmail.com",
+      "userId": "usr-1792646442003-9bb3",
+      "timestamp": "2026-10-22T05:20:42.016Z"
+    },
+    {
+      "id": "log-1792648134353",
+      "action": "APPLICATION_SUBMITTED",
+      "details": "Application OMD-TRN-2026-87478 submitted by donntuen@gmail.com for UI/UX Design & Product Interface",
+      "userId": "usr-1792646442003-9bb3",
+      "timestamp": "2026-10-22T05:48:54.353Z"
+    },
+    {
+      "id": "log-1792648907325",
+      "action": "USER_REGISTERED",
+      "details": "New trainee registered: emmasunday@gmail.com",
+      "userId": "usr-1792648907309-ctm6",
+      "timestamp": "2026-10-22T06:01:47.325Z"
+    },
+    {
+      "id": "log-1792649723067",
+      "action": "APPLICATION_SUBMITTED",
+      "details": "Application OMD-TRN-2026-53451 submitted by emmasunday@gmail.com for Product Discovery & Tech Strategy",
+      "userId": "usr-1792648907309-ctm6",
+      "timestamp": "2026-10-22T06:15:23.067Z"
+    },
+    {
+      "id": "log-1792651512255",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-22T06:45:12.255Z"
+    },
+    {
+      "id": "log-1792651590598",
+      "action": "APPLICATION_STATUS_UPDATED",
+      "details": "Application OMD-TRN-2026-95426 status changed to Shortlisted by admin",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-22T06:46:30.598Z"
+    },
+    {
+      "id": "log-1792651601361",
+      "action": "APPLICATION_STATUS_UPDATED",
+      "details": "Application OMD-TRN-2026-87478 status changed to Accepted by admin",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-22T06:46:41.361Z"
+    },
+    {
+      "id": "log-1792651612829",
+      "action": "APPLICATION_STATUS_UPDATED",
+      "details": "Application OMD-TRN-2026-53451 status changed to Shortlisted by admin",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-22T06:46:52.829Z"
+    },
+    {
+      "id": "log-1792652901637",
+      "action": "USER_REGISTERED",
+      "details": "New trainee registered: jane@example.com",
+      "userId": "usr-1792652901622-1942",
+      "timestamp": "2026-10-22T07:08:21.637Z"
+    },
+    {
+      "id": "log-1792652926453",
+      "action": "USER_LOGIN",
+      "details": "User signed in: jane@example.com",
+      "userId": "usr-1792652901622-1942",
+      "timestamp": "2026-10-22T07:08:46.453Z"
+    },
+    {
+      "id": "log-1792653013072",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-22T07:10:13.072Z"
+    },
+    {
+      "id": "log-1792653158904",
+      "action": "USER_LOGIN",
+      "details": "User signed in: jane@example.com",
+      "userId": "usr-1792652901622-1942",
+      "timestamp": "2026-10-22T07:12:38.904Z"
+    },
+    {
+      "id": "log-1792653289388",
+      "action": "TRAINEE_ADDED",
+      "details": "New trainee spotlight created: Don Ntuen",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-22T07:14:49.388Z"
+    },
+    {
+      "id": "log-1792653356694",
+      "action": "TRAINEE_DELETED",
+      "details": "Trainee profile removed ID: tr-1792653289386",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-22T07:15:56.694Z"
+    },
+    {
+      "id": "log-1792653946941",
+      "action": "APPLICATION_STATUS_UPDATED",
+      "details": "Application OMD-TRN-2026-20373 status changed to Under Review by admin",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-22T07:25:46.941Z"
     }
   ],
   "attendanceRecords": [],
-  "performanceRecords": []
+  "performanceRecords": [],
+  "trainingAssignments": [],
+  "trainingSubmissions": [],
+  "traineePassports": [
+    {
+      "traineeId": "usr-1792646442003-9bb3",
+      "fileName": "53d20b39434f08a501b2523d7896d6dc1e068cdb23fdfb8b.jpg",
+      "mimeType": "image/jpeg"
+    },
+    {
+      "traineeId": "usr-1792648907309-ctm6",
+      "fileName": "21d1083437e28ab03abe0c3d4f98dab886b5e5c32bc8d7e7.jpg",
+      "mimeType": "image/jpeg"
+    },
+    {
+      "traineeId": "usr-1792652901622-1942",
+      "fileName": "f4eb2f117d2fbfa82ccf99b68ee7421ee8099f04ce1dec79.png",
+      "mimeType": "image/png"
+    }
+  ]
 }

@@ -4,6 +4,9 @@ import { Eye, EyeOff, Lock, Mail, User, Phone, CheckCircle2 } from 'lucide-react
 import { Logo } from '../components/Logo';
 import { useAuth } from '../context/AuthContext';
 
+const MAX_PASSPORT_SIZE = 5 * 1024 * 1024;
+const acceptedPassportTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
 export const RegisterPage: React.FC = () => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -16,6 +19,8 @@ export const RegisterPage: React.FC = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [passportPhoto, setPassportPhoto] = useState<File | null>(null);
+  const [passportConsent, setPassportConsent] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -40,17 +45,41 @@ export const RegisterPage: React.FC = () => {
       setErrorMsg('You must agree to the Terms & Conditions and Privacy Policy to register.');
       return;
     }
+    if (!passportPhoto) {
+      setErrorMsg('Upload your passport photograph to create an account.');
+      return;
+    }
+    if (!passportConsent) {
+      setErrorMsg('Please agree to the secure storage and review of your passport photograph.');
+      return;
+    }
 
     setIsSubmitting(true);
-    const result = await register({
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email: formData.email,
-      phone: formData.phone,
-      password: formData.password,
-      termsAccepted: formData.termsAccepted,
-    });
-    setIsSubmitting(false);
+    let result: Awaited<ReturnType<typeof register>>;
+    try {
+      const passportData = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => typeof reader.result === 'string'
+          ? resolve(reader.result)
+          : reject(new Error('Unable to read the selected passport photograph.'));
+        reader.onerror = () => reject(new Error('Unable to read the selected passport photograph.'));
+        reader.readAsDataURL(passportPhoto);
+      });
+      result = await register({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+        passportPhoto: passportData,
+        passportConsent,
+        termsAccepted: formData.termsAccepted,
+      });
+    } catch (err) {
+      result = { success: false, error: err instanceof Error ? err.message : 'Unable to read the selected photograph.' };
+    } finally {
+      setIsSubmitting(false);
+    }
 
     if (result.success) {
       if (redirectIntent) {
@@ -160,6 +189,50 @@ export const RegisterPage: React.FC = () => {
                 />
               </div>
             </div>
+
+            <div>
+              <label htmlFor="passport-photo" className="block text-xs font-semibold text-gray-700 mb-1">
+                Passport Photograph <span className="text-[#E63946]">*</span>
+              </label>
+              <input
+                id="passport-photo"
+                type="file"
+                required
+                accept="image/jpeg,image/png,image/webp"
+                onChange={(event) => {
+                  setErrorMsg('');
+                  const file = event.target.files?.[0] || null;
+                  if (file && !acceptedPassportTypes.includes(file.type)) {
+                    setErrorMsg('Choose a JPEG, PNG, or WebP image.');
+                    event.target.value = '';
+                    setPassportPhoto(null);
+                    return;
+                  }
+                  if (file && file.size > MAX_PASSPORT_SIZE) {
+                    setErrorMsg('Passport photographs must be 5 MB or smaller.');
+                    event.target.value = '';
+                    setPassportPhoto(null);
+                    return;
+                  }
+                  setPassportPhoto(file);
+                }}
+                className="w-full text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-[#155EEF]"
+              />
+              <p className="mt-1 text-[11px] text-gray-500">JPEG, PNG, or WebP, up to 5 MB. Only administrators can view this image.</p>
+            </div>
+
+            <label className="flex items-start gap-2.5 cursor-pointer">
+              <input
+                type="checkbox"
+                required
+                checked={passportConsent}
+                onChange={(event) => setPassportConsent(event.target.checked)}
+                className="mt-0.5 rounded border-gray-300 text-[#155EEF] focus:ring-[#155EEF]"
+              />
+              <span className="text-xs text-gray-600 leading-snug">
+                I authorize OmedanTech to securely store and allow authorized administrators to review this photograph for account and training administration.
+              </span>
+            </label>
 
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-1">
