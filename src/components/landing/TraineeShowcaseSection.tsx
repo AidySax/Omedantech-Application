@@ -66,7 +66,7 @@ const TraineeCard: React.FC<{ trainee: TraineeShowcase }> = ({ trainee }) => {
       <div>
         <div className="flex items-start gap-4 mb-4">
           {/* Avatar / Portrait */}
-          <div className="w-14 h-14 rounded-full overflow-hidden bg-slate-200 shrink-0 border-2 border-white shadow-2xs">
+          <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-200 shrink-0 border-2 border-white shadow-2xs">
             {!imgError && trainee.photoUrl ? (
               <img
                 src={trainee.photoUrl}

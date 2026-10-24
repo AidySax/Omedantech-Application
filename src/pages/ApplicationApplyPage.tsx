@@ -211,6 +211,10 @@ export const ApplicationApplyPage: React.FC = () => {
   // Application Submission Handler
   const handleSubmitApplication = async () => {
     setErrorMsg('');
+    if (showcaseConsent && !showcasePhoto) {
+      setErrorMsg('Upload a showcase photo to include your candidate spotlight.');
+      return;
+    }
     setIsSubmitting(true);
 
     try {
@@ -582,17 +586,18 @@ export const ApplicationApplyPage: React.FC = () => {
                     className="mt-0.5 rounded border-gray-300 text-[#155EEF] focus:ring-[#155EEF]"
                   />
                   <span className="text-xs text-gray-700 leading-snug">
-                    I agree that my name, program interest, learning goal, and optional photo may be considered for the public trainee showcase. My entry will remain hidden unless an administrator approves it.
+                    I agree that my name, program interest, learning goal, and showcase photo may be considered for the public trainee showcase. My entry will remain hidden unless an administrator approves it.
                   </span>
                 </label>
                 {showcaseConsent && (
                   <div>
                     <label htmlFor="showcase-photo" className="block text-xs font-semibold text-gray-700 mb-1">
-                      Optional showcase photo
+                      Showcase photo
                     </label>
                     <input
                       id="showcase-photo"
                       type="file"
+                      required={showcaseConsent}
                       accept="image/jpeg,image/png,image/webp"
                       onChange={(event) => {
                         const file = event.target.files?.[0] || null;
@@ -613,7 +618,7 @@ export const ApplicationApplyPage: React.FC = () => {
                       }}
                       className="w-full text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-blue-100 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-[#155EEF]"
                     />
-                    <p className="mt-1 text-[11px] text-gray-500">JPEG, PNG, or WebP, up to 1 MB. Your private passport photo is not used.</p>
+                    <p className="mt-1 text-[11px] text-gray-500">Required for a candidate spotlight. JPEG, PNG, or WebP, up to 1 MB. Your private passport photo is not used.</p>
                   </div>
                 )}
               </div>

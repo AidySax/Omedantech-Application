@@ -902,11 +902,14 @@ apiRouter.post('/applications', authenticate, (req: AuthenticatedRequest, res: R
     if (typeof showcaseConsent !== 'boolean') {
       return res.status(400).json({ error: 'Please provide a valid trainee showcase consent choice.' });
     }
+    if (showcaseConsent && !showcasePhoto) {
+      return res.status(400).json({ error: 'Upload a showcase photo to include your candidate spotlight.' });
+    }
     if (showcasePhoto && !showcaseConsent) {
       return res.status(400).json({ error: 'Consent is required before submitting a public showcase photo.' });
     }
     let showcasePhotoUrl = '';
-    if (showcasePhoto) {
+    if (showcaseConsent) {
       const parsedPhoto = parsePassportPhoto(showcasePhoto);
       if (!parsedPhoto || parsedPhoto.buffer.length > 1024 * 1024) {
         return res.status(400).json({ error: 'Choose a valid JPEG, PNG, or WebP showcase photo no larger than 1 MB.' });

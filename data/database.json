@@ -1,32 +1,6 @@
 {
   "users": [
     {
-      "id": "usr-1792121207414-bns0",
-      "firstName": "Theresa",
-      "lastName": "Lawrence",
-      "email": "theresalawrence504@gmail.com",
-      "phone": "09013465607",
-      "role": "trainee",
-      "isEmailVerified": true,
-      "createdAt": "2026-10-16T03:26:47.414Z",
-      "salt": "b7da8fbee3f2ad8a34b7429ca653679a",
-      "passwordHash": "68ade316c95c2c1bb7bb109c33e4f9ca742da2e09d34cab68b1d3b0c076c2d7945d07a7aa7e4217551e6db480d10b97c9fa8daf0adb04acdb8024900a0dc3c68",
-      "assignedProgramIds": []
-    },
-    {
-      "id": "usr-1792195089112-covr",
-      "firstName": "Aidy",
-      "lastName": "sax",
-      "email": "aidysax@gmail.com",
-      "phone": "09040290704",
-      "role": "trainee",
-      "isEmailVerified": true,
-      "createdAt": "2026-10-16T23:58:09.113Z",
-      "salt": "f929e9526a7dc2fe4d1c13dbdb075a04",
-      "passwordHash": "df774dfa8b22033aa28888e0019bd96ac2f987e032f6afadd90b541c8f6565edc2bfc1305ba2a35253224c43089318c4933d7ecc59f49e7a320eb47a729c4144",
-      "assignedProgramIds": []
-    },
-    {
       "id": "usr-admin-bootstrap",
       "firstName": "System",
       "lastName": "Administrator",
@@ -38,32 +12,6 @@
       "createdAt": "2026-10-17T00:33:04.093Z",
       "salt": "18f7d070fa78a320300a91a342e93d25",
       "passwordHash": "ec8fb99c6cc6dd7a5c12a4f412e2845723dca0ad872470b2e8ca3e2c81ad88c9d8a1f7d0d62e33dc932b5de7b8acd04294ace049e8c1389e8ae92ed72ef71e39"
-    },
-    {
-      "id": "usr-1792321649240-hgin",
-      "firstName": "esther",
-      "lastName": "johne",
-      "email": "ej875556@gmail.com",
-      "phone": "08085514609",
-      "role": "trainee",
-      "isEmailVerified": true,
-      "createdAt": "2026-10-18T11:07:29.240Z",
-      "salt": "d9ab93742240ed23efebf5b62c6b7ee4",
-      "passwordHash": "b106b1ae1bd48ea03a799e9027af26d0d0430d4872fe215129a9418d2231b29426b62a2ad9b71fb847fdccf38c8d1508cb2bbdc09141a4215e2034c2dbc4d3a9",
-      "assignedProgramIds": []
-    },
-    {
-      "id": "usr-1792370103207-xct3",
-      "firstName": "Efenibietke",
-      "lastName": "Udonnah",
-      "email": "udonnah@gmail.com",
-      "phone": "09163908639",
-      "role": "trainee",
-      "isEmailVerified": true,
-      "createdAt": "2026-10-19T00:35:03.208Z",
-      "salt": "d7a97cc113fdbaa1c42bbbfec1c68f76",
-      "passwordHash": "be574da93f261da913f6404bc96cc7189a77f6a5ebccab3ffb474279d78e3d3d8072b8708534369c1492de48706094bbd26f9325b34be45cb15277f7c4953554",
-      "assignedProgramIds": []
     },
     {
       "id": "usr-1792646442003-9bb3",
@@ -101,7 +49,34 @@
       "isEmailVerified": true,
       "createdAt": "2026-10-22T07:08:21.634Z",
       "salt": "db7e480c0aa0ab941b4104edb8b04547",
-      "passwordHash": "913feecdce9b0db341ecbe63e88141b83aec29becbeddb6f207b6e3989eb56e1beb1e20e6395361465e21b5ab07c8ed929b25f9499168be8fa7f140d91440f80"
+      "passwordHash": "913feecdce9b0db341ecbe63e88141b83aec29becbeddb6f207b6e3989eb56e1beb1e20e6395361465e21b5ab07c8ed929b25f9499168be8fa7f140d91440f80",
+      "assignedProgramIds": []
+    },
+    {
+      "id": "usr-1792657336116-v332",
+      "firstName": "Efenibietke",
+      "lastName": "Udonnah",
+      "email": "williamsudonnah@gmail.com",
+      "phone": "09163908639",
+      "role": "trainee",
+      "isEmailVerified": true,
+      "createdAt": "2026-10-22T08:22:16.126Z",
+      "salt": "97fcc9679865fe7ec9286fa2a2e39623",
+      "passwordHash": "cb95aff5a53cd6734b49f44363025dcbe1562ba52067149d5b37e70942092588ac37220e15a31be2f9a85c4fdc28fb820978828c953cfc5ce8dbee11b0947755",
+      "assignedProgramIds": []
+    },
+    {
+      "id": "usr-1792657866544-1wyk",
+      "firstName": "Don",
+      "lastName": "Ntuen",
+      "email": "ntuendon@gmail.com",
+      "phone": "09163314491",
+      "role": "trainee",
+      "isEmailVerified": true,
+      "createdAt": "2026-10-22T08:31:06.556Z",
+      "salt": "fe2bad32b9162ca93999672d941db580",
+      "passwordHash": "017bff097898e44c0355bdc58f5798c968541d3a1b2bedad7384a81b2d67d9008097bfe60628b69f86951c67f24f942045adee7122a9076718f54d520b73d77b",
+      "assignedProgramIds": []
     }
   ],
   "services": [
@@ -487,87 +462,6 @@
   ],
   "applications": [
     {
-      "id": "app-1792195267187",
-      "referenceNo": "OMD-TRN-2026-60260",
-      "userId": "usr-1792195089112-covr",
-      "userEmail": "aidysax@gmail.com",
-      "applicantName": "Aidy sax",
-      "applicantPhone": "09040290704",
-      "programId": "prog-2",
-      "programTitle": "AI Development & Machine Learning",
-      "programSlug": "ai-development",
-      "educationLevel": "Undergraduate Student",
-      "experienceLevel": "Intermediate",
-      "reasonForApplying": "I have interest in Tech",
-      "learningGoals": "To be focus and commit",
-      "availability": "Full-Time Weekday Intensive",
-      "screeningAnswers": {
-        "priorCodingExperience": "Basic familiarity",
-        "weeklyHoursCommitment": "10-15 hours",
-        "hasPersonalLaptop": "Yes, modern laptop available"
-      },
-      "declarationAccepted": true,
-      "status": "Accepted",
-      "submissionDate": "2026-10-17T00:01:07.187Z",
-      "updatedAt": "2026-10-18T11:51:39.143Z",
-      "reviewerNotes": "",
-      "reviewedBy": "System Administrator"
-    },
-    {
-      "id": "app-1792322682245",
-      "referenceNo": "OMD-TRN-2026-20373",
-      "userId": "usr-1792321649240-hgin",
-      "userEmail": "ej875556@gmail.com",
-      "applicantName": "esther johne",
-      "applicantPhone": "08085514609",
-      "programId": "prog-5",
-      "programTitle": "UI/UX Design & Product Interface",
-      "programSlug": "ui-ux-design",
-      "educationLevel": "Bachelor's Degree",
-      "experienceLevel": "Beginner",
-      "reasonForApplying": "short and direct",
-      "learningGoals": "professional development",
-      "availability": "Weekday Evenings & Weekends",
-      "screeningAnswers": {
-        "priorCodingExperience": "Basic familiarity",
-        "weeklyHoursCommitment": "10-15 hours",
-        "hasPersonalLaptop": "Yes, modern laptop available"
-      },
-      "declarationAccepted": true,
-      "status": "Under Review",
-      "submissionDate": "2026-10-18T11:24:42.245Z",
-      "updatedAt": "2026-10-22T07:25:46.939Z",
-      "reviewerNotes": "",
-      "reviewedBy": "System Administrator"
-    },
-    {
-      "id": "app-1792372705645",
-      "referenceNo": "OMD-TRN-2026-95426",
-      "userId": "usr-1792370103207-xct3",
-      "userEmail": "udonnah@gmail.com",
-      "applicantName": "Efenibietke Udonnah",
-      "applicantPhone": "09163908639",
-      "programId": "prog-2",
-      "programTitle": "AI Development & Machine Learning",
-      "programSlug": "ai-development",
-      "educationLevel": "High School / Secondary",
-      "experienceLevel": "Beginner",
-      "reasonForApplying": "To build more confidence in AI development",
-      "learningGoals": "To manage and control AI development",
-      "availability": "Full-Time Weekday Intensive",
-      "screeningAnswers": {
-        "priorCodingExperience": "Basic familiarity",
-        "weeklyHoursCommitment": "6-10 hours",
-        "hasPersonalLaptop": "Yes, shared laptop"
-      },
-      "declarationAccepted": true,
-      "status": "Shortlisted",
-      "submissionDate": "2026-10-19T01:18:25.645Z",
-      "updatedAt": "2026-10-22T06:46:30.595Z",
-      "reviewerNotes": "",
-      "reviewedBy": "System Administrator"
-    },
-    {
       "id": "app-1792648134351",
       "referenceNo": "OMD-TRN-2026-87478",
       "userId": "usr-1792646442003-9bb3",
@@ -624,60 +518,6 @@
   ],
   "statusHistory": [
     {
-      "id": "hist-1792195267187",
-      "applicationId": "app-1792195267187",
-      "oldStatus": "Draft",
-      "newStatus": "Submitted",
-      "changedBy": "aidysax@gmail.com",
-      "notes": "Application submitted successfully.",
-      "timestamp": "2026-10-17T00:01:07.187Z"
-    },
-    {
-      "id": "hist-1792322682245",
-      "applicationId": "app-1792322682245",
-      "oldStatus": "Draft",
-      "newStatus": "Submitted",
-      "changedBy": "ej875556@gmail.com",
-      "notes": "Application submitted successfully.",
-      "timestamp": "2026-10-18T11:24:42.245Z"
-    },
-    {
-      "id": "hist-1792324299143-qwx5",
-      "applicationId": "app-1792195267187",
-      "oldStatus": "Submitted",
-      "newStatus": "Accepted",
-      "changedBy": "admin@omedantech.com",
-      "notes": "Status updated to Accepted",
-      "timestamp": "2026-10-18T11:51:39.143Z"
-    },
-    {
-      "id": "hist-1792324439540-r3va",
-      "applicationId": "app-1792322682245",
-      "oldStatus": "Submitted",
-      "newStatus": "Shortlisted",
-      "changedBy": "admin@omedantech.com",
-      "notes": "Status updated to Shortlisted",
-      "timestamp": "2026-10-18T11:53:59.540Z"
-    },
-    {
-      "id": "hist-1792324484887-mawi",
-      "applicationId": "app-1792322682245",
-      "oldStatus": "Shortlisted",
-      "newStatus": "Rejected",
-      "changedBy": "admin@omedantech.com",
-      "notes": "Status updated to Rejected",
-      "timestamp": "2026-10-18T11:54:44.887Z"
-    },
-    {
-      "id": "hist-1792372705645",
-      "applicationId": "app-1792372705645",
-      "oldStatus": "Draft",
-      "newStatus": "Submitted",
-      "changedBy": "udonnah@gmail.com",
-      "notes": "Application submitted successfully.",
-      "timestamp": "2026-10-19T01:18:25.645Z"
-    },
-    {
       "id": "hist-1792648134351",
       "applicationId": "app-1792648134351",
       "oldStatus": "Draft",
@@ -696,15 +536,6 @@
       "timestamp": "2026-10-22T06:15:23.064Z"
     },
     {
-      "id": "hist-1792651590595-0ak9",
-      "applicationId": "app-1792372705645",
-      "oldStatus": "Submitted",
-      "newStatus": "Shortlisted",
-      "changedBy": "admin@omedantech.com",
-      "notes": "Status updated to Shortlisted",
-      "timestamp": "2026-10-22T06:46:30.595Z"
-    },
-    {
       "id": "hist-1792651601359-tlil",
       "applicationId": "app-1792648134351",
       "oldStatus": "Submitted",
@@ -721,15 +552,6 @@
       "changedBy": "admin@omedantech.com",
       "notes": "Status updated to Shortlisted",
       "timestamp": "2026-10-22T06:46:52.827Z"
-    },
-    {
-      "id": "hist-1792653946939-dd4k",
-      "applicationId": "app-1792322682245",
-      "oldStatus": "Rejected",
-      "newStatus": "Under Review",
-      "changedBy": "admin@omedantech.com",
-      "notes": "Status updated to Under Review",
-      "timestamp": "2026-10-22T07:25:46.939Z"
     }
   ],
   "contactMessages": [
@@ -783,8 +605,7 @@
     {
       "id": "log-1792121207417",
       "action": "USER_REGISTERED",
-      "details": "New trainee registered: theresalawrence504@gmail.com",
-      "userId": "usr-1792121207414-bns0",
+      "details": "New trainee registered: [deleted trainee]",
       "timestamp": "2026-10-16T03:26:47.417Z"
     },
     {
@@ -804,15 +625,13 @@
     {
       "id": "log-1792195089114",
       "action": "USER_REGISTERED",
-      "details": "New trainee registered: aidysax@gmail.com",
-      "userId": "usr-1792195089112-covr",
+      "details": "New trainee registered: [deleted trainee]",
       "timestamp": "2026-10-16T23:58:09.114Z"
     },
     {
       "id": "log-1792195267189",
       "action": "APPLICATION_SUBMITTED",
-      "details": "Application OMD-TRN-2026-60260 submitted by aidysax@gmail.com for AI Development & Machine Learning",
-      "userId": "usr-1792195089112-covr",
+      "details": "Application [deleted trainee] submitted by [deleted trainee] for AI Development & Machine Learning",
       "timestamp": "2026-10-17T00:01:07.189Z"
     },
     {
@@ -880,15 +699,13 @@
     {
       "id": "log-1792321649241",
       "action": "USER_REGISTERED",
-      "details": "New trainee registered: ej875556@gmail.com",
-      "userId": "usr-1792321649240-hgin",
+      "details": "New trainee registered: [deleted trainee]",
       "timestamp": "2026-10-18T11:07:29.241Z"
     },
     {
       "id": "log-1792322682247",
       "action": "APPLICATION_SUBMITTED",
-      "details": "Application OMD-TRN-2026-20373 submitted by ej875556@gmail.com for UI/UX Design & Product Interface",
-      "userId": "usr-1792321649240-hgin",
+      "details": "Application [deleted trainee] submitted by [deleted trainee] for UI/UX Design & Product Interface",
       "timestamp": "2026-10-18T11:24:42.247Z"
     },
     {
@@ -901,14 +718,14 @@
     {
       "id": "log-1792324299146",
       "action": "APPLICATION_STATUS_UPDATED",
-      "details": "Application OMD-TRN-2026-60260 status changed to Accepted by admin",
+      "details": "Application [deleted trainee] status changed to Accepted by admin",
       "userId": "usr-admin-bootstrap",
       "timestamp": "2026-10-18T11:51:39.146Z"
     },
     {
       "id": "log-1792324439541",
       "action": "APPLICATION_STATUS_UPDATED",
-      "details": "Application OMD-TRN-2026-20373 status changed to Shortlisted by admin",
+      "details": "Application [deleted trainee] status changed to Shortlisted by admin",
       "userId": "usr-admin-bootstrap",
       "timestamp": "2026-10-18T11:53:59.541Z"
     },
@@ -922,22 +739,20 @@
     {
       "id": "log-1792324484889",
       "action": "APPLICATION_STATUS_UPDATED",
-      "details": "Application OMD-TRN-2026-20373 status changed to Rejected by admin",
+      "details": "Application [deleted trainee] status changed to Rejected by admin",
       "userId": "usr-admin-bootstrap",
       "timestamp": "2026-10-18T11:54:44.889Z"
     },
     {
       "id": "log-1792370103209",
       "action": "USER_REGISTERED",
-      "details": "New trainee registered: udonnah@gmail.com",
-      "userId": "usr-1792370103207-xct3",
+      "details": "New trainee registered: [deleted trainee]",
       "timestamp": "2026-10-19T00:35:03.209Z"
     },
     {
       "id": "log-1792372705648",
       "action": "APPLICATION_SUBMITTED",
-      "details": "Application OMD-TRN-2026-95426 submitted by udonnah@gmail.com for AI Development & Machine Learning",
-      "userId": "usr-1792370103207-xct3",
+      "details": "Application [deleted trainee] submitted by [deleted trainee] for AI Development & Machine Learning",
       "timestamp": "2026-10-19T01:18:25.648Z"
     },
     {
@@ -956,7 +771,7 @@
     {
       "id": "log-1792373226119",
       "action": "PASSWORD_RESET_REQUEST",
-      "details": "Reset requested for theresalawrence504@gmail.com",
+      "details": "Reset requested for [deleted trainee]",
       "timestamp": "2026-10-19T01:27:06.119Z"
     },
     {
@@ -969,7 +784,7 @@
     {
       "id": "log-1792373307897",
       "action": "TEAM_UPDATED",
-      "details": "Team member updated: Efenibietke Udonnah",
+      "details": "Team member updated: [deleted trainee]",
       "userId": "usr-admin-bootstrap",
       "timestamp": "2026-10-19T01:28:27.897Z"
     },
@@ -1018,7 +833,7 @@
     {
       "id": "log-1792651590598",
       "action": "APPLICATION_STATUS_UPDATED",
-      "details": "Application OMD-TRN-2026-95426 status changed to Shortlisted by admin",
+      "details": "Application [deleted trainee] status changed to Shortlisted by admin",
       "userId": "usr-admin-bootstrap",
       "timestamp": "2026-10-22T06:46:30.598Z"
     },
@@ -1081,9 +896,72 @@
     {
       "id": "log-1792653946941",
       "action": "APPLICATION_STATUS_UPDATED",
-      "details": "Application OMD-TRN-2026-20373 status changed to Under Review by admin",
+      "details": "Application [deleted trainee] status changed to Under Review by admin",
       "userId": "usr-admin-bootstrap",
       "timestamp": "2026-10-22T07:25:46.941Z"
+    },
+    {
+      "id": "log-1792655239991",
+      "action": "TRAINEE_ACCOUNT_DELETED",
+      "details": "A trainee account and its linked personal training records were permanently deleted.",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-22T07:47:19.991Z"
+    },
+    {
+      "id": "log-1792655640821",
+      "action": "USER_LOGIN",
+      "details": "User signed in: emmasunday@gmail.com",
+      "userId": "usr-1792648907309-ctm6",
+      "timestamp": "2026-10-22T07:54:00.821Z"
+    },
+    {
+      "id": "log-1792655771829",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-22T07:56:11.829Z"
+    },
+    {
+      "id": "log-1792655834440",
+      "action": "TRAINEE_ACCOUNT_DELETED",
+      "details": "A trainee account and its linked personal training records were permanently deleted.",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-22T07:57:14.440Z"
+    },
+    {
+      "id": "log-1792655858593",
+      "action": "TRAINEE_ACCOUNT_DELETED",
+      "details": "A trainee account and its linked personal training records were permanently deleted.",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-22T07:57:38.593Z"
+    },
+    {
+      "id": "log-1792656012636",
+      "action": "TRAINEE_ACCOUNT_DELETED",
+      "details": "A trainee account and its linked personal training records were permanently deleted.",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-22T08:00:12.636Z"
+    },
+    {
+      "id": "log-1792657336128",
+      "action": "USER_REGISTERED",
+      "details": "New trainee registered: williamsudonnah@gmail.com",
+      "userId": "usr-1792657336116-v332",
+      "timestamp": "2026-10-22T08:22:16.128Z"
+    },
+    {
+      "id": "log-1792657866559",
+      "action": "USER_REGISTERED",
+      "details": "New trainee registered: ntuendon@gmail.com",
+      "userId": "usr-1792657866544-1wyk",
+      "timestamp": "2026-10-22T08:31:06.559Z"
+    },
+    {
+      "id": "log-1792838879262",
+      "action": "USER_LOGIN",
+      "details": "User signed in: admin@omedantech.com",
+      "userId": "usr-admin-bootstrap",
+      "timestamp": "2026-10-24T10:47:59.262Z"
     }
   ],
   "attendanceRecords": [],
@@ -1105,6 +983,16 @@
       "traineeId": "usr-1792652901622-1942",
       "fileName": "f4eb2f117d2fbfa82ccf99b68ee7421ee8099f04ce1dec79.png",
       "mimeType": "image/png"
+    },
+    {
+      "traineeId": "usr-1792657336116-v332",
+      "fileName": "536ce53eb000abbc555639945fb5a07ecacc8c6cd3ad2db0.jpg",
+      "mimeType": "image/jpeg"
+    },
+    {
+      "traineeId": "usr-1792657866544-1wyk",
+      "fileName": "31d597520a0f77f897ded53675191f7440d5d5e46339b4be.jpg",
+      "mimeType": "image/jpeg"
     }
   ]
 }

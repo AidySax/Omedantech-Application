@@ -78,7 +78,7 @@ This project brings the firm's public-facing website and training application pr
 
 - Program-specific application forms.
 - Applicant profile and learning interests.
-- Optional trainee-showcase opt-in during application, with a separate optional showcase photo and administrator approval before public display.
+- Optional trainee-showcase opt-in during application; applicants who opt in must provide a separate showcase photo, and an administrator must approve the profile before public display.
 - Optional supporting-document upload, if enabled.
 - Application review before submission.
 - Unique application reference numbers.

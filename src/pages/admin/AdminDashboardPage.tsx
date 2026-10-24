@@ -588,110 +588,113 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
         )}
 
-        {/* Tab Navigation */}
-        <div className="bg-white p-1 rounded-xl border border-[#D0D5DD] flex flex-wrap gap-1">
-          <button
-            onClick={() => setActiveTab('applications')}
-            className={`py-2 px-4 rounded-lg text-xs font-bold transition-colors ${
-              activeTab === 'applications'
-                ? 'bg-[#155EEF] text-white shadow-xs'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            Applications ({applications.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('programs')}
-            className={`py-2 px-4 rounded-lg text-xs font-bold transition-colors ${
-              activeTab === 'programs'
-                ? 'bg-[#155EEF] text-white shadow-xs'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            Training Programs ({programs.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('team')}
-            className={`py-2 px-4 rounded-lg text-xs font-bold transition-colors ${
-              activeTab === 'team'
-                ? 'bg-[#155EEF] text-white shadow-xs'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            Management Team ({teamMembers.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('trainees')}
-            className={`py-2 px-4 rounded-lg text-xs font-bold transition-colors ${
-              activeTab === 'trainees'
-                ? 'bg-[#155EEF] text-white shadow-xs'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            Trainee Showcase ({trainees.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('messages')}
-            className={`py-2 px-4 rounded-lg text-xs font-bold transition-colors ${
-              activeTab === 'messages'
-                ? 'bg-[#155EEF] text-white shadow-xs'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            Contact Messages ({messages.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('audit')}
-            className={`py-2 px-4 rounded-lg text-xs font-bold transition-colors ${
-              activeTab === 'audit'
-                ? 'bg-[#155EEF] text-white shadow-xs'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            Audit Logs
-          </button>
-          <button
-            onClick={() => setActiveTab('staff')}
-            className={`py-2 px-4 rounded-lg text-xs font-bold transition-colors ${
-              activeTab === 'staff'
-                ? 'bg-[#155EEF] text-white shadow-xs'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            Staff & Access
-          </button>
-          <button
-            onClick={() => setActiveTab('class-records')}
-            className={`py-2 px-4 rounded-lg text-xs font-bold transition-colors ${
-              activeTab === 'class-records'
-                ? 'bg-[#155EEF] text-white shadow-xs'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            Class Records
-          </button>
-          <button
-            onClick={() => setActiveTab('training')}
-            className={`py-2 px-4 rounded-lg text-xs font-bold transition-colors ${
-              activeTab === 'training'
-                ? 'bg-[#155EEF] text-white shadow-xs'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            Training Progress
-          </button>
-          <button
-            onClick={() => setActiveTab('trainee-accounts')}
-            className={`py-2 px-4 rounded-lg text-xs font-bold transition-colors ${
-              activeTab === 'trainee-accounts'
-                ? 'bg-[#155EEF] text-white shadow-xs'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            Trainee Accounts
-          </button>
-        </div>
+        <div className="flex flex-col lg:flex-row gap-6">
+          <aside className="w-full lg:w-64 lg:shrink-0">
+            <nav aria-label="Admin dashboard sections" className="bg-white p-2 rounded-xl border border-[#D0D5DD] flex flex-col gap-1">
+              <button
+                onClick={() => setActiveTab('applications')}
+                className={`w-full text-left py-2.5 px-4 rounded-lg text-xs font-bold transition-colors ${
+                  activeTab === 'applications'
+                    ? 'bg-[#155EEF] text-white shadow-xs'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Applications ({applications.length})
+              </button>
+              <button
+                onClick={() => setActiveTab('programs')}
+                className={`w-full text-left py-2.5 px-4 rounded-lg text-xs font-bold transition-colors ${
+                  activeTab === 'programs'
+                    ? 'bg-[#155EEF] text-white shadow-xs'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Training Programs ({programs.length})
+              </button>
+              <button
+                onClick={() => setActiveTab('team')}
+                className={`w-full text-left py-2.5 px-4 rounded-lg text-xs font-bold transition-colors ${
+                  activeTab === 'team'
+                    ? 'bg-[#155EEF] text-white shadow-xs'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Management Team ({teamMembers.length})
+              </button>
+              <button
+                onClick={() => setActiveTab('trainees')}
+                className={`w-full text-left py-2.5 px-4 rounded-lg text-xs font-bold transition-colors ${
+                  activeTab === 'trainees'
+                    ? 'bg-[#155EEF] text-white shadow-xs'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Trainee Showcase ({trainees.length})
+              </button>
+              <button
+                onClick={() => setActiveTab('messages')}
+                className={`w-full text-left py-2.5 px-4 rounded-lg text-xs font-bold transition-colors ${
+                  activeTab === 'messages'
+                    ? 'bg-[#155EEF] text-white shadow-xs'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Contact Messages ({messages.length})
+              </button>
+              <button
+                onClick={() => setActiveTab('audit')}
+                className={`w-full text-left py-2.5 px-4 rounded-lg text-xs font-bold transition-colors ${
+                  activeTab === 'audit'
+                    ? 'bg-[#155EEF] text-white shadow-xs'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Audit Logs
+              </button>
+              <button
+                onClick={() => setActiveTab('staff')}
+                className={`w-full text-left py-2.5 px-4 rounded-lg text-xs font-bold transition-colors ${
+                  activeTab === 'staff'
+                    ? 'bg-[#155EEF] text-white shadow-xs'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Staff & Access
+              </button>
+              <button
+                onClick={() => setActiveTab('class-records')}
+                className={`w-full text-left py-2.5 px-4 rounded-lg text-xs font-bold transition-colors ${
+                  activeTab === 'class-records'
+                    ? 'bg-[#155EEF] text-white shadow-xs'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Class Records
+              </button>
+              <button
+                onClick={() => setActiveTab('training')}
+                className={`w-full text-left py-2.5 px-4 rounded-lg text-xs font-bold transition-colors ${
+                  activeTab === 'training'
+                    ? 'bg-[#155EEF] text-white shadow-xs'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Training Progress
+              </button>
+              <button
+                onClick={() => setActiveTab('trainee-accounts')}
+                className={`w-full text-left py-2.5 px-4 rounded-lg text-xs font-bold transition-colors ${
+                  activeTab === 'trainee-accounts'
+                    ? 'bg-[#155EEF] text-white shadow-xs'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Trainee Accounts
+              </button>
+            </nav>
+          </aside>
 
+          <main className="min-w-0 flex-1 space-y-6">
         {activeTab === 'staff' && <AdminStaffManagement token={token} />}
         {activeTab === 'class-records' && <AdminClassRecords token={token} />}
         {activeTab === 'training' && <TrainingAssignmentManager token={token} role="admin" />}
@@ -1528,6 +1531,8 @@ export const AdminDashboardPage: React.FC = () => {
             </div>
           </div>
         )}
+        </main>
+        </div>
       </div>
     </div>
   );
